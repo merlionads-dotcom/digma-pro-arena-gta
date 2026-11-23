@@ -290,7 +290,7 @@
           </div>
 
           <div class="grid grid-cols-3 gap-2">
-            <!-- 1 звезда: ≥ 430 мс -->
+            <!-- 1 звезда: ≥ 460 мс -->
             <div class="rounded-2xl bg-black/45 border border-white/15 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
               <div>
                 <div class="text-[11px] tracking-tighter text-amber-400 mb-1.5">★<span class="text-white/20">★★</span></div>
@@ -304,12 +304,12 @@
                   <div class="w-7 h-[2px] rounded-full bg-zinc-400/70"></div>
                 </div>
                 <div class="text-[10px] font-semibold text-white leading-tight">Монитор 23.8"</div>
-                <div class="text-[9px] font-mono text-zinc-400 mt-0.5 whitespace-nowrap">≥&nbsp;430&nbsp;мс</div>
+                <div class="text-[9px] font-mono text-zinc-400 mt-0.5 whitespace-nowrap">≥&nbsp;460&nbsp;мс</div>
               </div>
               <div class="mt-2 py-1 rounded-lg bg-white/10 font-mono text-[11px] font-bold text-white">Скидка -10%</div>
             </div>
 
-            <!-- 2 звезды: 310–429 мс -->
+            <!-- 2 звезды: 340–459 мс -->
             <div class="rounded-2xl bg-black/50 border border-cyan-400/40 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
               <div>
                 <div class="text-[11px] tracking-tighter text-amber-400 mb-1.5">★★<span class="text-white/20">★</span></div>
@@ -323,12 +323,12 @@
                   <div class="w-7 h-[2px] rounded-full bg-cyan-300/80"></div>
                 </div>
                 <div class="text-[10px] font-semibold text-cyan-100 leading-tight">Монитор Art&nbsp;L 27"</div>
-                <div class="text-[9px] font-mono text-cyan-300/85 mt-0.5 whitespace-nowrap">310–429&nbsp;мс</div>
+                <div class="text-[9px] font-mono text-cyan-300/85 mt-0.5 whitespace-nowrap">340–459&nbsp;мс</div>
               </div>
               <div class="mt-2 py-1 rounded-lg bg-cyan-400/20 border border-cyan-400/40 font-mono text-[11px] font-bold text-cyan-200">Скидка -12%</div>
             </div>
 
-            <!-- 3 звезды: < 310 мс -->
+            <!-- 3 звезды: < 340 мс -->
             <div class="relative rounded-2xl bg-gradient-to-b from-pink-500/30 via-purple-900/55 to-black/65 border border-amber-400/85 backdrop-blur-md p-2.5 flex flex-col justify-between text-center shadow-[0_0_24px_rgba(255,42,133,0.32)]">
               <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-pink-500 text-zinc-950 text-[7.5px] font-black uppercase tracking-wider whitespace-nowrap">
                 ТОП МОНИТОР
@@ -345,7 +345,7 @@
                   <div class="w-8 h-[2px] rounded-full bg-amber-300"></div>
                 </div>
                 <div class="text-[10px] font-bold text-white leading-tight">Vision&nbsp;L 31.5"</div>
-                <div class="text-[9px] font-mono text-amber-200 font-bold mt-0.5 whitespace-nowrap">&lt;&nbsp;310&nbsp;мс</div>
+                <div class="text-[9px] font-mono text-amber-200 font-bold mt-0.5 whitespace-nowrap">&lt;&nbsp;340&nbsp;мс</div>
               </div>
               <div class="mt-2 py-1 rounded-lg bg-white font-mono text-[11px] font-black text-zinc-950">Скидка -15%</div>
             </div>
@@ -356,6 +356,7 @@
       <!-- Нижний блок: CTA + онлайн -->
       <div class="space-y-2.5 pt-2">
         <button
+          id="btn-start-game"
           type="button"
           onclick="startGame()"
           class="gta-cta btn-sheen relative overflow-hidden w-full py-3.5 rounded-2xl text-white font-gta italic tracking-wider text-[14px] sm:text-[15px] uppercase flex items-center justify-center gap-2 active:scale-[0.97] transition cursor-pointer"
@@ -491,7 +492,7 @@
           </div>
           <div class="rounded-xl bg-black/50 border border-cyan-400/35 p-2">
             <div class="text-[9.5px] font-mono text-cyan-300 uppercase">Реакция</div>
-            <div id="res-reaction" class="font-mono text-base font-extrabold text-white">310 мс</div>
+            <div id="res-reaction" class="font-mono text-base font-extrabold text-white">320 мс</div>
             <div id="res-combo-bonus-tag" class="hidden text-[9px] font-mono text-amber-300 font-bold">комбо -20 мс</div>
           </div>
           <div class="rounded-xl bg-black/50 border border-white/12 p-2">
@@ -631,7 +632,7 @@
         <div class="space-y-2.5 text-xs text-purple-100/90 leading-relaxed">
           <div class="rounded-xl bg-white/5 border border-white/10 p-3 space-y-1">
             <div class="text-[10.5px] font-mono font-bold text-cyan-300 uppercase">1. Две цели и 2 фазы (20 секунд)</div>
-            <p><strong class="text-zinc-200">0–10 сек • Режим 60 Гц:</strong> на арене одновременно 2 движущиеся цели со шлейфом и задержкой клика. Попадание = <span class="font-mono text-white">100 очков</span>.</p>
+            <p><strong class="text-zinc-200">0–10 сек • Режим 60 Гц:</strong> на арене одновременно 2 движущиеся цели со шлейфом и легкой задержкой отклика. Попадание = <span class="font-mono text-white">100 очков</span>.</p>
             <p><strong class="text-white">10–20 сек • DIGMA PRO 240 Гц Форсаж:</strong> 0 мс задержки, максимальная плавность. Попадание = <span class="font-mono text-cyan-300">250 очков</span>.</p>
           </div>
 
@@ -649,15 +650,15 @@
             <div class="text-[10.5px] font-mono font-bold text-cyan-300 uppercase">3. Призовые мониторы DIGMA PRO</div>
             <div class="space-y-1 text-[11px]">
               <div class="flex items-center justify-between py-1 border-b border-white/10">
-                <span><strong class="text-amber-300">★★★ &lt; 310 мс</strong> • Киберспорт</span>
+                <span><strong class="text-amber-300">★★★ &lt; 340 мс</strong> • Киберспорт</span>
                 <span class="font-mono text-white font-bold">Vision L 240 Гц (-15%)</span>
               </div>
               <div class="flex items-center justify-between py-1 border-b border-white/10">
-                <span><strong class="text-cyan-300">★★ 310–429 мс</strong> • ПРО-Геймер</span>
+                <span><strong class="text-cyan-300">★★ 340–459 мс</strong> • ПРО-Геймер</span>
                 <span class="font-mono text-cyan-200 font-bold">Art L 27" 165 Гц (-12%)</span>
               </div>
               <div class="flex items-center justify-between py-1">
-                <span><strong class="text-zinc-200">★ ≥ 430 мс</strong> • Игрок</span>
+                <span><strong class="text-zinc-200">★ ≥ 460 мс</strong> • Игрок</span>
                 <span class="font-mono text-zinc-300 font-bold">23.8" 144 Гц (-10%)</span>
               </div>
             </div>
@@ -686,11 +687,1493 @@
      * ============================================================================
      */
     const APP_CONFIG = {
-      BOT_USERNAME: "Digma_arena_gta_game_Bot", // Точный username из BotFather (с окончанием _Bot!)
+      BOT_USERNAME: "Digma_arena_gta_game_Bot", // Точный username из BotFather (с окончанием _Bot)
       APP_SHORT_NAME: "app", // Короткое имя из /newapp в @BotFather — даёт карточку с картинкой 640x360 и кнопкой ЗАПУСТИТЬ
       OZON_VENDOR_PREFIX: "vendor_org_XXXXX",
       TG_ANALYTICS_BOT_TOKEN: "",
       TG_ANALYTICS_CHAT_ID: "",
       GOOGLE_SHEETS_WEBHOOK_URL: ""
     };
-// ... existing code ... -->
+
+    // Линейка игровых мониторов DIGMA PRO
+    const MONITOR_CATALOG = {
+      pro240: {
+        tier: "pro240",
+        stars: 3,
+        rank: "Ранг: КИБЕРСПОРТ (TOP 5%)",
+        hzLabel: "240 Гц",
+        name: 'DIGMA PRO Vision L 31.5" (OLED)',
+        specs: "4K UHD • QD-OLED • 240 Гц • Серебристый",
+        baseDiscount: 15,
+        promoBase: "PRO240-VISION",
+        productUrl: "https://www.ozon.ru/product/digma-pro-31-5-monitor-vision-l-oled-3840x2160-4k-240-gts-serebristyy-1774815886/",
+        campaign: "tma_arena_pro240"
+      },
+      gamer165: {
+        tier: "gamer165",
+        stars: 2,
+        rank: "Ранг: ПРО-ГЕЙМЕР",
+        hzLabel: "165 Гц",
+        name: 'DIGMA PRO Art L 27" (DM27SP03)',
+        specs: "2560×1440 2K • IPS • 165 Гц • Антиблик",
+        baseDiscount: 12,
+        promoBase: "PRO165-ARTL",
+        productUrl: "https://www.ozon.ru/product/digma-pro-27-monitor-igrovoy-art-l-2560-1440-2k-s-chastotoy-165gts-antiblikovoe-pokrytie-dm27sp03-1383547488/",
+        campaign: "tma_arena_gamer165"
+      },
+      start144: {
+        tier: "start144",
+        stars: 1,
+        rank: "Ранг: ИГРОК • ПЕРВЫЙ АПГРЕЙД",
+        hzLabel: "144 Гц",
+        name: 'DIGMA PRO 23.8" Gaming',
+        specs: "1920×1080 Full HD • IPS • 144 Гц • Черный",
+        baseDiscount: 10,
+        promoBase: "PRO144-START",
+        productUrl: "https://www.ozon.ru/product/digma-pro-23-8-monitor-ips-1920x1080-144-gts-chernyy-3958432071/",
+        campaign: "tma_arena_start144"
+      }
+    };
+
+    /**
+     * ============================================================================
+     * 2. БЕЗОПАСНАЯ ИНТЕГРАЦИЯ TELEGRAM WEBAPP SDK И АНАЛИТИКИ
+     * ============================================================================
+     */
+    const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+
+    const sessionMeta = {
+      source: "direct",
+      userId: "guest_" + Math.floor(100000 + Math.random() * 900000),
+      username: "Игрок",
+      platform: "web"
+    };
+
+    function safeHaptic(type, style) {
+      try {
+        if (!tg || !tg.HapticFeedback) return;
+        if (type === "impact") {
+          tg.HapticFeedback.impactOccurred(style || "light");
+        } else if (type === "notification") {
+          tg.HapticFeedback.notificationOccurred(style || "success");
+        }
+      } catch (e) {
+        // Игнорируем в десктопном или внешнем браузере
+      }
+    }
+
+    function initTelegramApp() {
+      try {
+        if (tg) {
+          tg.ready();
+          tg.expand();
+          if (typeof tg.setHeaderColor === "function") {
+            tg.setHeaderColor("#0d0618");
+          }
+          if (typeof tg.setBackgroundColor === "function") {
+            tg.setBackgroundColor("#0b0516");
+          }
+
+          const initData = tg.initDataUnsafe || {};
+          if (initData.user) {
+            sessionMeta.userId = String(initData.user.id || sessionMeta.userId);
+            sessionMeta.username = initData.user.username || initData.user.first_name || "Игрок";
+          }
+          if (initData.start_param) {
+            sessionMeta.source = initData.start_param;
+          }
+          sessionMeta.platform = tg.platform || "telegram";
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const startParamUrl = urlParams.get("tgWebAppStartParam") || urlParams.get("startapp");
+        if (startParamUrl) {
+          sessionMeta.source = startParamUrl;
+        }
+
+        if (sessionMeta.source.toLowerCase().includes("ozon")) {
+          const badge = document.getElementById("source-badge");
+          if (badge) badge.classList.remove("hidden");
+        }
+      } catch (e) {
+        console.warn("Telegram SDK init fallback:", e);
+      }
+
+      trackEvent("app_open", { source: sessionMeta.source, platform: sessionMeta.platform });
+    }
+
+    function buildOzonTrackedUrl(monitorObj, promoCode) {
+      try {
+        const url = new URL(monitorObj.productUrl);
+        url.searchParams.set("utm_source", "telegram_miniapp");
+        url.searchParams.set("utm_medium", "gamification_240hz");
+        url.searchParams.set("utm_campaign", monitorObj.campaign);
+        url.searchParams.set("utm_content", `${sessionMeta.source}_${promoCode}`);
+        if (APP_CONFIG.OZON_VENDOR_PREFIX && !APP_CONFIG.OZON_VENDOR_PREFIX.includes("XXXXX")) {
+          url.searchParams.set("from_global", "true");
+        }
+        return url.toString();
+      } catch (e) {
+        return monitorObj.productUrl;
+      }
+    }
+
+    function trackEvent(eventName, payload = {}) {
+      const eventRecord = {
+        event: eventName,
+        timestamp: new Date().toISOString(),
+        userId: sessionMeta.userId,
+        source: sessionMeta.source,
+        ...payload
+      };
+
+      if (APP_CONFIG.TG_ANALYTICS_BOT_TOKEN && APP_CONFIG.TG_ANALYTICS_CHAT_ID) {
+        const text = `📊 DIGMA PRO Arena | ${eventName}\nИсточник: ${sessionMeta.source}\nИгрок: ${sessionMeta.username} (${sessionMeta.userId})\nДетали: ${JSON.stringify(payload)}`;
+        fetch(`https://api.telegram.org/bot${APP_CONFIG.TG_ANALYTICS_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: APP_CONFIG.TG_ANALYTICS_CHAT_ID,
+            text: text
+          })
+        }).catch(() => {});
+      }
+
+      if (APP_CONFIG.GOOGLE_SHEETS_WEBHOOK_URL) {
+        fetch(APP_CONFIG.GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(eventRecord)
+        }).catch(() => {});
+      }
+    }
+
+    /**
+     * ============================================================================
+     * 3. СОВРЕМЕННЫЙ САУНД-ДИЗАЙН И ПРОЦЕДУРНАЯ ТЕХНО-МЕЛОДИЯ (WEB AUDIO API)
+     * ============================================================================
+     */
+    let audioCtx = null;
+    let soundEnabled = true;
+    let noiseBuffer = null;
+
+    // Состояние фонового техно-секвенсора (132 BPM)
+    const bgmState = {
+      isPlaying: false,
+      timerId: null,
+      step: 0
+    };
+
+    function ensureAudio() {
+      if (!soundEnabled) return null;
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+          // Генерируем буфер белого шума для хай-хэтов, снэйров и искр попаданий
+          const bufferSize = audioCtx.sampleRate * 1.0;
+          noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const data = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume().catch(() => {});
+        }
+        return audioCtx;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Авто-разблокировка аудиодвижка при первом касании экрана на мобильных устройствах
+    document.addEventListener("pointerdown", () => {
+      if (soundEnabled) ensureAudio();
+    }, { passive: true });
+
+    // Синтез одного 16-дольного шага фонового техно-трека (ми-минор / киберпанк)
+    function triggerTechnoStep(ctx, stepIndex, isPro) {
+      const now = ctx.currentTime;
+      const step = stepIndex % 16;
+
+      // 1. Прямая техно-бочка (4/4 на каждый 4-й шаг)
+      if (step % 4 === 0) {
+        const kickOsc = ctx.createOscillator();
+        const kickGain = ctx.createGain();
+        kickOsc.type = "sine";
+        kickOsc.frequency.setValueAtTime(isPro ? 135 : 105, now);
+        kickOsc.frequency.exponentialRampToValueAtTime(38, now + 0.11);
+
+        kickGain.gain.setValueAtTime(isPro ? 0.22 : 0.14, now);
+        kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+        kickOsc.connect(kickGain);
+        kickGain.connect(ctx.destination);
+        kickOsc.start(now);
+        kickOsc.stop(now + 0.17);
+      }
+
+      // 2. Пульсирующий техно-бас (Ми-минор: E1, G1, A1, B1)
+      const bassPattern = [
+        41.20, 0, 41.20, 41.20,
+        49.00, 0, 41.20, 49.00,
+        55.00, 0, 55.00, 49.00,
+        61.74, 0, 49.00, 41.20
+      ];
+      const bassFreq = bassPattern[step];
+      if (bassFreq > 0) {
+        const bassOsc = ctx.createOscillator();
+        const bassFilter = ctx.createBiquadFilter();
+        const bassGain = ctx.createGain();
+
+        bassOsc.type = "sawtooth";
+        bassOsc.frequency.setValueAtTime(bassFreq, now);
+
+        bassFilter.type = "lowpass";
+        bassFilter.frequency.setValueAtTime(isPro ? 540 : 240, now);
+        bassFilter.frequency.exponentialRampToValueAtTime(isPro ? 140 : 95, now + 0.12);
+        bassFilter.Q.value = isPro ? 4.5 : 2.0;
+
+        bassGain.gain.setValueAtTime(isPro ? 0.13 : 0.08, now);
+        bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+
+        bassOsc.connect(bassFilter);
+        bassFilter.connect(bassGain);
+        bassGain.connect(ctx.destination);
+        bassOsc.start(now);
+        bassOsc.stop(now + 0.14);
+      }
+
+      // 3. Закрытый/открытый хай-хэт (на слабую долю активнее в 240 Гц)
+      if (noiseBuffer && (step % 2 === 1 || (isPro && step % 4 === 2))) {
+        const hatSource = ctx.createBufferSource();
+        hatSource.buffer = noiseBuffer;
+
+        const hatFilter = ctx.createBiquadFilter();
+        hatFilter.type = "highpass";
+        hatFilter.frequency.setValueAtTime(isPro ? 7200 : 5200, now);
+
+        const hatGain = ctx.createGain();
+        const isOpenHat = step % 4 === 2;
+        const hatDur = isOpenHat ? 0.075 : 0.032;
+        hatGain.gain.setValueAtTime(isPro ? (isOpenHat ? 0.055 : 0.032) : 0.018, now);
+        hatGain.gain.exponentialRampToValueAtTime(0.0008, now + hatDur);
+
+        hatSource.connect(hatFilter);
+        hatFilter.connect(hatGain);
+        hatGain.connect(ctx.destination);
+        hatSource.start(now);
+        hatSource.stop(now + hatDur + 0.01);
+      }
+
+      // 4. Неоновая техно-мелодия (арпеджио: в 60 Гц приглушённое, в 240 Гц яркое и быстрое)
+      const leadPattern = [
+        329.63, 0, 392.00, 493.88,
+        587.33, 493.88, 392.00, 0,
+        329.63, 493.88, 659.25, 587.33,
+        493.88, 392.00, 440.00, 493.88
+      ];
+      const leadFreq = leadPattern[step];
+      if (leadFreq > 0 && (isPro || step % 2 === 0)) {
+        const leadOsc = ctx.createOscillator();
+        const leadFilter = ctx.createBiquadFilter();
+        const leadGain = ctx.createGain();
+
+        leadOsc.type = isPro ? "sawtooth" : "triangle";
+        leadOsc.frequency.setValueAtTime(isPro ? leadFreq : leadFreq * 0.5, now);
+
+        leadFilter.type = "lowpass";
+        leadFilter.frequency.setValueAtTime(isPro ? 2400 : 680, now);
+        leadFilter.frequency.exponentialRampToValueAtTime(isPro ? 420 : 220, now + 0.13);
+        leadFilter.Q.value = 3.2;
+
+        leadGain.gain.setValueAtTime(isPro ? 0.065 : 0.035, now);
+        leadGain.gain.exponentialRampToValueAtTime(0.0008, now + 0.14);
+
+        leadOsc.connect(leadFilter);
+        leadFilter.connect(leadGain);
+        leadGain.connect(ctx.destination);
+        leadOsc.start(now);
+        leadOsc.stop(now + 0.15);
+      }
+    }
+
+    function startTechnoMusic() {
+      stopTechnoMusic();
+      if (!soundEnabled) return;
+      const ctx = ensureAudio();
+      if (!ctx) return;
+
+      bgmState.isPlaying = true;
+      bgmState.step = 0;
+
+      // 132 BPM -> 16-я нота = ~113.6 мс
+      const stepMs = 114;
+      triggerTechnoStep(ctx, bgmState.step++, state.isProMode);
+      bgmState.timerId = setInterval(() => {
+        if (!soundEnabled || state.screen !== "playing") {
+          stopTechnoMusic();
+          return;
+        }
+        const activeCtx = ensureAudio();
+        if (activeCtx) {
+          triggerTechnoStep(activeCtx, bgmState.step++, state.isProMode);
+        }
+      }, stepMs);
+    }
+
+    function stopTechnoMusic() {
+      bgmState.isPlaying = false;
+      if (bgmState.timerId) {
+        clearInterval(bgmState.timerId);
+        bgmState.timerId = null;
+      }
+    }
+
+    function playSoundToggleChime() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const notes = [659.25, 987.77]; // E5 -> B5 (кристальный UI-отклик)
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.055);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.055);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.055 + 0.16);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.055);
+          osc.stop(now + idx * 0.055 + 0.17);
+        });
+      } catch (e) {}
+    }
+
+    // Современный многослойный звук попадания (саб-удар + неоновый плак + искра)
+    function playHitSound(isPro, combo) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const pitchScale = 1 + Math.min(combo - 1, 3) * 0.12;
+
+        // Слой 1: Плотный саб-панч
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = "sine";
+        subOsc.frequency.setValueAtTime(isPro ? 190 : 140, now);
+        subOsc.frequency.exponentialRampToValueAtTime(48, now + 0.075);
+        subGain.gain.setValueAtTime(isPro ? 0.22 : 0.15, now);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        subOsc.start(now);
+        subOsc.stop(now + 0.09);
+
+        // Слой 2: Высокотехнологичный лазерно-стеклянный плак
+        const leadOsc = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const leadGain = ctx.createGain();
+
+        leadOsc.type = isPro ? "triangle" : "sine";
+        const baseFreq = (isPro ? 780 : 380) * pitchScale;
+        leadOsc.frequency.setValueAtTime(baseFreq, now);
+        leadOsc.frequency.exponentialRampToValueAtTime(baseFreq * (isPro ? 1.65 : 0.72), now + 0.09);
+
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(isPro ? 1800 : 750, now);
+        filter.Q.value = 2.2;
+
+        leadGain.gain.setValueAtTime(isPro ? 0.18 : 0.11, now);
+        leadGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+        leadOsc.connect(filter);
+        filter.connect(leadGain);
+        leadGain.connect(ctx.destination);
+        leadOsc.start(now);
+        leadOsc.stop(now + 0.11);
+
+        // Слой 3: Короткий высокочастотный клик-транзиент в режиме 240 Гц
+        if (isPro && noiseBuffer) {
+          const clickSrc = ctx.createBufferSource();
+          clickSrc.buffer = noiseBuffer;
+          const hp = ctx.createBiquadFilter();
+          hp.type = "highpass";
+          hp.frequency.setValueAtTime(4500, now);
+          const clickGain = ctx.createGain();
+          clickGain.gain.setValueAtTime(0.09, now);
+          clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+          clickSrc.connect(hp);
+          hp.connect(clickGain);
+          clickGain.connect(ctx.destination);
+          clickSrc.start(now);
+          clickSrc.stop(now + 0.03);
+        }
+      } catch (e) {}
+    }
+
+    // Восходящий кибер-аккорд при повышении уровня ТУРБО
+    function playComboUpSound(combo) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const root = 329.63 * (1 + (combo - 2) * 0.25); // От E4 вверх
+        const chord = [root, root * 1.25, root * 1.5, root * 2];
+        chord.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + i * 0.04);
+          gain.gain.setValueAtTime(0.12, now + i * 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.18);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.04);
+          osc.stop(now + i * 0.04 + 0.19);
+        });
+      } catch (e) {}
+    }
+
+    // Современный низкий глитч-сброс при промахе
+    function playMissSound() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(135, now);
+        osc.frequency.exponentialRampToValueAtTime(46, now + 0.14);
+
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(360, now);
+
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      } catch (e) {}
+    }
+
+    // Мощный разгон и басовый дроп при включении 240 Гц Форсаж
+    function playOverdriveSound() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+
+        // Свип-разгон вверх
+        const riser = ctx.createOscillator();
+        const riserFilter = ctx.createBiquadFilter();
+        const riserGain = ctx.createGain();
+        riser.type = "sawtooth";
+        riser.frequency.setValueAtTime(165, now);
+        riser.frequency.exponentialRampToValueAtTime(1320, now + 0.28);
+
+        riserFilter.type = "lowpass";
+        riserFilter.frequency.setValueAtTime(400, now);
+        riserFilter.frequency.exponentialRampToValueAtTime(4800, now + 0.28);
+
+        riserGain.gain.setValueAtTime(0.14, now);
+        riserGain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+
+        riser.connect(riserFilter);
+        riserFilter.connect(riserGain);
+        riserGain.connect(ctx.destination);
+        riser.start(now);
+        riser.stop(now + 0.35);
+
+        // Саб-дроп удар в момент переключения
+        const drop = ctx.createOscillator();
+        const dropGain = ctx.createGain();
+        drop.type = "sine";
+        drop.frequency.setValueAtTime(150, now + 0.05);
+        drop.frequency.exponentialRampToValueAtTime(34, now + 0.42);
+        dropGain.gain.setValueAtTime(0.28, now + 0.05);
+        dropGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        drop.connect(dropGain);
+        dropGain.connect(ctx.destination);
+        drop.start(now + 0.05);
+        drop.stop(now + 0.46);
+      } catch (e) {}
+    }
+
+    // Финальный неоновый аккорд победы
+    function playVictorySound() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        // Ми-минор 9 (E4, G4, B4, F#5, B5) — стильный киберпанк-финал
+        const chord = [329.63, 392.00, 493.88, 739.99, 987.77];
+        chord.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const filter = ctx.createBiquadFilter();
+          const gain = ctx.createGain();
+
+          osc.type = idx < 2 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.055);
+
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(2600, now + idx * 0.055);
+
+          gain.gain.setValueAtTime(0.11, now + idx * 0.055);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.055 + 0.55);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.055);
+          osc.stop(now + idx * 0.055 + 0.58);
+        });
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.querySelectorAll(".sound-on-icon").forEach(el => {
+        el.classList.toggle("hidden", !soundEnabled);
+      });
+      document.querySelectorAll(".sound-off-icon").forEach(el => {
+        el.classList.toggle("hidden", soundEnabled);
+      });
+      safeHaptic("impact", "light");
+      if (soundEnabled) {
+        playSoundToggleChime();
+        if (state.screen === "playing") {
+          startTechnoMusic();
+        }
+        showToast("Звук и техно-саундтрек включены");
+      } else {
+        stopTechnoMusic();
+        showToast("Звук выключен");
+      }
+    }
+
+    /**
+     * ============================================================================
+     * 4. ИГРОВОЙ ДВИЖОК (CANVAS, ОТЗЫВЧИВЫЕ НАЖАТИЯ, 2 ЦЕЛИ, ТУРБО-КОМБО)
+     * ============================================================================
+     */
+    const canvas = document.getElementById("game-canvas");
+    const ctx = canvas.getContext("2d");
+    const appShell = document.getElementById("app-shell");
+
+    const ROUND_DURATION = 20.0;
+    const SWITCH_TIME = 10.0;
+    const TARGET_COUNT = 2;
+
+    const state = {
+      screen: "start", // start | playing | results
+      isProMode: false,
+      timeLeft: ROUND_DURATION,
+      lastFrameTime: 0,
+      lastHitTime: 0,
+      gridOffset: 0,
+      score: 0,
+      hits: 0,
+      hits60: 0,
+      hits240: 0,
+      streak: 0,
+      combo: 1,
+      maxCombo: 1,
+      reactionTimes: [],
+      rt60List: [],
+      rt240List: [],
+      targets: [],
+      particles: [],
+      floatingTexts: [],
+      selectedMonitor: MONITOR_CATALOG.gamer165,
+      currentPromo: "PRO165-ARTL",
+      currentDiscount: 12,
+      referralBonusApplied: false
+    };
+
+    function resizeCanvas() {
+      if (!canvas || !appShell) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = appShell.getBoundingClientRect();
+      const w = Math.max(300, rect.width || window.innerWidth);
+      const h = Math.max(500, rect.height || window.innerHeight);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    // Генерация одной движущейся цели с комфортным размером и плавной скоростью
+    function createSingleTarget(index, existingTargets = []) {
+      const rect = appShell.getBoundingClientRect();
+      const w = rect.width || 390;
+      const h = rect.height || 700;
+
+      const padX = 50;
+      const topSafe = 132;
+      const bottomSafe = 86;
+
+      const radius = state.isProMode ? 30 : 25;
+      const baseSpeed = state.isProMode ? 155 : 120;
+      const lifeDuration = state.isProMode ? 2700 : 3100;
+
+      let x = w * 0.5;
+      let y = h * 0.5;
+      for (let attempt = 0; attempt < 15; attempt++) {
+        const candX = padX + Math.random() * Math.max(40, w - padX * 2);
+        const candY = topSafe + Math.random() * Math.max(60, h - topSafe - bottomSafe);
+        const tooClose = existingTargets.some(other => Math.hypot(candX - other.x, candY - other.y) < 110);
+        x = candX;
+        y = candY;
+        if (!tooClose) break;
+      }
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = baseSpeed * (0.85 + Math.random() * 0.3);
+
+      return {
+        id: Math.random().toString(36).slice(2),
+        slot: index,
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius,
+        scale: 0.25,
+        spawnTime: performance.now(),
+        lifeDuration,
+        trail: []
+      };
+    }
+
+    function initDualTargets() {
+      state.targets = [];
+      for (let i = 0; i < TARGET_COUNT; i++) {
+        state.targets.push(createSingleTarget(i, state.targets));
+      }
+    }
+
+    function replaceTarget(index) {
+      const others = state.targets.filter((_, idx) => idx !== index);
+      state.targets[index] = createSingleTarget(index, others);
+    }
+
+    function spawnExplosion(x, y, isPro) {
+      const colors = isPro
+        ? ["#00f0ff", "#ff2a85", "#ffb703", "#ffffff"]
+        : ["#d4d4d8", "#a1a1aa", "#f4f4f5"];
+      const count = isPro ? 22 : 12;
+
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const speed = (isPro ? 120 : 75) + Math.random() * (isPro ? 220 : 120);
+        state.particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: (isPro ? 3.5 : 2.5) + Math.random() * 3,
+          alpha: 1,
+          decay: 1.8 + Math.random() * 1.1,
+          color: colors[i % colors.length]
+        });
+      }
+    }
+
+    function spawnFloatingText(x, y, text, color, scale = 1) {
+      state.floatingTexts.push({
+        x,
+        y,
+        vy: -65,
+        text,
+        color,
+        scale,
+        alpha: 1
+      });
+    }
+
+    function triggerShake(heavy = false) {
+      if (!appShell) return;
+      appShell.classList.remove("shake-light", "shake-heavy");
+      void appShell.offsetWidth;
+      appShell.classList.add(heavy ? "shake-heavy" : "shake-light");
+    }
+
+    // Расчёт итоговой реакции с учётом бонуса за турбо-комбо
+    function getAdjustedAvgReaction() {
+      if (state.reactionTimes.length === 0) return 480;
+      const rawAvg = state.reactionTimes.reduce((a, b) => a + b, 0) / state.reactionTimes.length;
+      const comboBonusMs = state.maxCombo >= 4 ? 30 : state.maxCombo === 3 ? 20 : state.maxCombo === 2 ? 10 : 0;
+      return Math.max(145, Math.round(rawAvg - comboBonusMs));
+    }
+
+    // Переключение экранов
+    function showScreen(screenName) {
+      state.screen = screenName;
+
+      const startEl = document.getElementById("screen-start");
+      const hudEl = document.getElementById("screen-hud");
+      const resEl = document.getElementById("screen-results");
+      const topBarEl = document.getElementById("top-bar");
+      const dimEl = document.getElementById("backdrop-dim");
+
+      if (startEl) startEl.classList.toggle("hidden", screenName !== "start");
+      if (hudEl) hudEl.classList.toggle("hidden", screenName !== "playing");
+      if (resEl) resEl.classList.toggle("hidden", screenName !== "results");
+      if (topBarEl) topBarEl.classList.toggle("hidden", screenName === "playing");
+
+      if (dimEl) {
+        dimEl.style.opacity = screenName === "playing" ? "0.18" : "1";
+      }
+    }
+
+    function startGame() {
+      try {
+        closeRulesModal();
+        ensureAudio();
+        safeHaptic("impact", "medium");
+        resizeCanvas();
+
+        state.isProMode = false;
+        state.timeLeft = ROUND_DURATION;
+        state.lastFrameTime = performance.now();
+        state.lastHitTime = 0;
+        state.score = 0;
+        state.hits = 0;
+        state.hits60 = 0;
+        state.hits240 = 0;
+        state.streak = 0;
+        state.combo = 1;
+        state.maxCombo = 1;
+        state.reactionTimes = [];
+        state.rt60List = [];
+        state.rt240List = [];
+        state.particles = [];
+        state.floatingTexts = [];
+        state.referralBonusApplied = false;
+
+        // Сброс HUD
+        document.getElementById("hud-score").textContent = "0";
+        document.getElementById("hud-timer").textContent = ROUND_DURATION.toFixed(1);
+        document.getElementById("hud-rt-live").textContent = "— мс";
+        document.getElementById("hud-progress").style.width = "100%";
+
+        updateComboUI();
+        updateLiveStars(null);
+
+        const modeBadge = document.getElementById("hud-mode-badge");
+        const modeDot = document.getElementById("hud-mode-dot");
+        const modeText = document.getElementById("hud-mode-text");
+        const bottomHint = document.getElementById("hud-bottom-hint");
+
+        modeBadge.className = "px-3 py-1.5 rounded-xl bg-black/55 border border-white/15 backdrop-blur-md flex items-center gap-2 transition-all duration-300";
+        modeDot.className = "w-2 h-2 rounded-full bg-zinc-400";
+        modeText.className = "font-mono text-[11px] font-bold tracking-wider text-zinc-200";
+        modeText.textContent = "60 ГЦ • ЛАГ";
+
+        bottomHint.className = "inline-block px-3 py-1 rounded-full bg-black/50 border border-white/10 font-mono text-[10px] tracking-wider uppercase text-purple-200/85";
+        bottomHint.textContent = "ФАЗА 1: 60 ГЦ • СБИВАЙ ОБЕ ЦЕЛИ БЕЗ ПРОМАХОВ (3 = ТУРБО)";
+
+        showScreen("playing");
+        initDualTargets();
+        startTechnoMusic();
+        trackEvent("game_start", { source: sessionMeta.source });
+      } catch (err) {
+        console.error("Ошибка запуска игры:", err);
+        showToast("Перезапускаем арену...");
+      }
+    }
+
+    function goToStart() {
+      stopTechnoMusic();
+      showScreen("start");
+    }
+
+    function activateOverdriveMode() {
+      state.isProMode = true;
+      safeHaptic("notification", "success");
+      playOverdriveSound();
+      triggerShake(true);
+
+      const flash = document.getElementById("screen-flash");
+      if (flash) {
+        flash.style.opacity = "0.65";
+        setTimeout(() => { flash.style.opacity = "0"; }, 160);
+      }
+
+      const banner = document.getElementById("overdrive-banner");
+      const bannerInner = document.getElementById("overdrive-inner");
+      if (banner && bannerInner) {
+        banner.classList.remove("hidden");
+        bannerInner.classList.remove("animate-overdrive");
+        void bannerInner.offsetWidth;
+        bannerInner.classList.add("animate-overdrive");
+        setTimeout(() => {
+          banner.classList.add("hidden");
+        }, 980);
+      }
+
+      const modeBadge = document.getElementById("hud-mode-badge");
+      const modeDot = document.getElementById("hud-mode-dot");
+      const modeText = document.getElementById("hud-mode-text");
+      const bottomHint = document.getElementById("hud-bottom-hint");
+
+      modeBadge.className = "px-3 py-1.5 rounded-xl bg-cyan-400/20 border border-cyan-300/70 backdrop-blur-md flex items-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300";
+      modeDot.className = "w-2 h-2 rounded-full bg-cyan-300 animate-ping";
+      modeText.className = "font-mono text-[11px] font-extrabold tracking-wider text-cyan-200";
+      modeText.textContent = "240 ГЦ • ФОРСАЖ";
+
+      bottomHint.className = "inline-block px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-300/50 font-mono text-[10px] font-bold tracking-wider uppercase text-cyan-200";
+      bottomHint.textContent = "⚡ 240 ГЦ ФОРСАЖ • 0 МС ЗАДЕРЖКА • 250 ОЧКОВ";
+
+      state.targets.forEach(t => {
+        t.radius = 30;
+        t.trail = [];
+      });
+    }
+
+    function updateComboUI() {
+      const pipCount = state.streak % 3;
+      const activePips = (state.streak > 0 && pipCount === 0) ? 3 : pipCount;
+
+      [1, 2, 3].forEach(idx => {
+        const pip = document.getElementById(`pip-${idx}`);
+        if (!pip) return;
+        if (idx <= activePips) {
+          pip.className = "w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#ffb703] transition-all scale-125";
+        } else {
+          pip.className = "w-1.5 h-1.5 rounded-full bg-white/20 transition-all";
+        }
+      });
+
+      const comboWrap = document.getElementById("hud-combo-wrap");
+      const comboVal = document.getElementById("hud-combo");
+      if (!comboWrap || !comboVal) return;
+
+      if (state.combo > 1) {
+        comboWrap.classList.remove("hidden");
+        comboVal.textContent = state.combo;
+      } else {
+        comboWrap.classList.add("hidden");
+      }
+    }
+
+    function updateLiveStars(avgMs) {
+      const s1 = document.getElementById("star-1");
+      const s2 = document.getElementById("star-2");
+      const s3 = document.getElementById("star-3");
+      if (!s1 || !s2 || !s3) return;
+
+      if (!avgMs) {
+        s1.className = "text-sm transition-all duration-300 star-inactive";
+        s2.className = "text-sm transition-all duration-300 star-inactive";
+        s3.className = "text-sm transition-all duration-300 star-inactive";
+        return;
+      }
+
+      const activeCount = avgMs < 340 ? 3 : avgMs < 460 ? 2 : 1;
+      s1.className = `text-sm transition-all duration-300 ${activeCount >= 1 ? "star-active" : "star-inactive"}`;
+      s2.className = `text-sm transition-all duration-300 ${activeCount >= 2 ? "star-active" : "star-inactive"}`;
+      s3.className = `text-sm transition-all duration-300 ${activeCount >= 3 ? "star-active" : "star-inactive"}`;
+    }
+
+    // Мгновенная и отзывчивая обработка попаданий по 2 целям
+    function processHitCheck(tapX, tapY, nowTime) {
+      if (state.screen !== "playing") return;
+
+      let hitIndex = -1;
+      let bestDist = Infinity;
+
+      for (let i = 0; i < state.targets.length; i++) {
+        const t = state.targets[i];
+        const dist = Math.hypot(tapX - t.x, tapY - t.y);
+        const hitTolerance = state.isProMode ? 18 : 14;
+        if (dist <= t.radius + hitTolerance && dist < bestDist) {
+          bestDist = dist;
+          hitIndex = i;
+        }
+      }
+
+      if (hitIndex !== -1) {
+        const target = state.targets[hitIndex];
+        const effectiveStart = Math.max(target.spawnTime, state.lastHitTime);
+        const rawReaction = Math.round(nowTime - effectiveStart);
+        state.lastHitTime = nowTime;
+
+        state.hits++;
+        state.streak++;
+
+        const prevCombo = state.combo;
+        state.combo = Math.min(4, 1 + Math.floor(state.streak / 3));
+        if (state.combo > state.maxCombo) {
+          state.maxCombo = state.combo;
+        }
+
+        const leveledUp = state.combo > prevCombo;
+        updateComboUI();
+
+        if (leveledUp) {
+          playComboUpSound(state.combo);
+        } else {
+          playHitSound(state.isProMode, state.combo);
+        }
+        safeHaptic("impact", state.isProMode ? "medium" : "light");
+
+        let effectiveRt = 300;
+        let gainedPoints = 100;
+
+        if (state.isProMode) {
+          state.hits240++;
+          effectiveRt = Math.max(135, Math.min(620, rawReaction - 25));
+          state.rt240List.push(effectiveRt);
+          gainedPoints = 250 * state.combo;
+        } else {
+          state.hits60++;
+          effectiveRt = Math.max(195, Math.min(760, rawReaction + 65));
+          state.rt60List.push(effectiveRt);
+          gainedPoints = 100 * state.combo;
+        }
+
+        state.score += gainedPoints;
+        state.reactionTimes.push(effectiveRt);
+
+        const adjustedAvg = getAdjustedAvgReaction();
+        document.getElementById("hud-score").textContent = state.score.toLocaleString("ru-RU");
+        document.getElementById("hud-rt-live").textContent = `${adjustedAvg} мс`;
+        updateLiveStars(adjustedAvg);
+
+        spawnExplosion(target.x, target.y, state.isProMode);
+
+        if (leveledUp) {
+          spawnFloatingText(target.x, target.y - 26, `ТУРБО x${state.combo}!`, "#ffb703", 1.18);
+        } else {
+          const label = state.combo > 1 ? `+${gainedPoints} (x${state.combo})` : `+${gainedPoints}`;
+          spawnFloatingText(target.x, target.y - 12, label, state.isProMode ? "#00f0ff" : "#ffffff", 1);
+        }
+
+        if (state.isProMode) triggerShake(false);
+
+        replaceTarget(hitIndex);
+      } else {
+        // Промах по пустому полю сбрасывает комбо-серию
+        state.lastHitTime = 0;
+        if (state.streak > 0 || state.combo > 1) {
+          state.streak = 0;
+          state.combo = 1;
+          updateComboUI();
+          playMissSound();
+          spawnFloatingText(tapX, tapY - 8, "ПРОМАХ • СБРОС", "#ff2a85", 0.92);
+        } else {
+          playMissSound();
+          spawnFloatingText(tapX, tapY - 8, "МИМО", "#a1a1aa", 0.85);
+        }
+      }
+    }
+
+    canvas.addEventListener("pointerdown", (e) => {
+      if (state.screen !== "playing") return;
+      e.preventDefault();
+      ensureAudio();
+
+      const rect = canvas.getBoundingClientRect();
+      const tapX = e.clientX - rect.left;
+      const tapY = e.clientY - rect.top;
+      const now = performance.now();
+
+      processHitCheck(tapX, tapY, now);
+    });
+
+    function finishGame() {
+      state.screen = "results";
+      stopTechnoMusic();
+      playVictorySound();
+      safeHaptic("notification", "success");
+
+      const avgReaction = getAdjustedAvgReaction();
+      const comboBonusMs = state.maxCombo >= 4 ? 30 : state.maxCombo === 3 ? 20 : state.maxCombo === 2 ? 10 : 0;
+
+      const avg60 = state.rt60List.length > 0
+        ? Math.round(state.rt60List.reduce((a, b) => a + b, 0) / state.rt60List.length)
+        : 485;
+      const avg240 = state.rt240List.length > 0
+        ? Math.round(state.rt240List.reduce((a, b) => a + b, 0) / state.rt240List.length)
+        : Math.max(195, avgReaction - 45);
+
+      const speedGainPct = avg60 > avg240
+        ? Math.min(72, Math.max(18, Math.round(((avg60 - avg240) / avg60) * 100)))
+        : 32;
+
+      let mon = MONITOR_CATALOG.start144;
+      if (avgReaction < 340) {
+        mon = MONITOR_CATALOG.pro240;
+      } else if (avgReaction < 460) {
+        mon = MONITOR_CATALOG.gamer165;
+      }
+
+      state.selectedMonitor = mon;
+      state.currentDiscount = mon.baseDiscount;
+      state.currentPromo = mon.promoBase;
+      state.referralBonusApplied = false;
+
+      document.getElementById("res-rank-badge").textContent = mon.rank;
+      document.getElementById("res-stars").innerHTML =
+        `<span class="text-amber-400">${"★".repeat(mon.stars)}</span><span class="text-white/20">${"★".repeat(3 - mon.stars)}</span>`;
+      document.getElementById("res-score").textContent = state.score.toLocaleString("ru-RU");
+      document.getElementById("res-reaction").textContent = `${avgReaction} мс`;
+
+      const bonusTag = document.getElementById("res-combo-bonus-tag");
+      if (comboBonusMs > 0) {
+        bonusTag.textContent = `турбо -${comboBonusMs} мс`;
+        bonusTag.classList.remove("hidden");
+      } else {
+        bonusTag.classList.add("hidden");
+      }
+
+      document.getElementById("res-boost").textContent = `x${state.maxCombo}`;
+      document.getElementById("res-rt-60").textContent = `${avg60} мс`;
+      document.getElementById("res-hits-60").textContent = state.hits60;
+      document.getElementById("res-rt-240").textContent = `${avg240} мс`;
+      document.getElementById("res-hits-240").textContent = state.hits240;
+      document.getElementById("res-phase-diff").textContent = `+${speedGainPct}% быстрее на 240 Гц`;
+
+      const nextTierHint = document.getElementById("res-next-tier-hint");
+      const nextTierText = document.getElementById("res-next-tier-text");
+      if (mon.tier === "gamer165") {
+        const diff = avgReaction - 339;
+        nextTierText.textContent = `Ускорься всего на ${diff} мс, чтобы забрать флагман Vision L 240 Гц (-15%)!`;
+        nextTierHint.classList.remove("hidden");
+      } else if (mon.tier === "start144") {
+        const diff = avgReaction - 459;
+        nextTierText.textContent = `Ускорься на ${diff} мс, чтобы открыть игровой Art L 27" 165 Гц (-12%)!`;
+        nextTierHint.classList.remove("hidden");
+      } else {
+        nextTierHint.classList.add("hidden");
+      }
+
+      document.getElementById("res-discount-badge").textContent = `СКИДКА ${state.currentDiscount}%`;
+      document.getElementById("res-mon-hz").textContent = mon.hzLabel;
+      document.getElementById("res-mon-name").textContent = mon.name;
+      document.getElementById("res-mon-specs").textContent = mon.specs;
+      document.getElementById("res-promo-code").textContent = state.currentPromo;
+
+      const ozonLink = document.getElementById("ozon-buy-link");
+      ozonLink.href = buildOzonTrackedUrl(mon, state.currentPromo);
+
+      const shareBtn = document.getElementById("btn-share-challenge");
+      const shareIcon = document.getElementById("share-btn-icon");
+      const shareText = document.getElementById("share-btn-text");
+      shareBtn.className = "w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-purple-100 font-semibold text-[11.5px] active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer";
+      shareIcon.textContent = "✈";
+      shareText.textContent = "Бросить вызов другу в Telegram (+3% к скидке)";
+
+      showScreen("results");
+      const resCard = document.getElementById("results-card");
+      resCard.classList.remove("animate-results");
+      void resCard.offsetWidth;
+      resCard.classList.add("animate-results");
+
+      trackEvent("game_finish", {
+        score: state.score,
+        avgReaction,
+        maxCombo: state.maxCombo,
+        tier: mon.tier,
+        promo: state.currentPromo
+      });
+    }
+
+    /**
+     * ============================================================================
+     * 5. ОТРИСОВКА КАДРА (РЕТРОВЕЙВ-ФОН, 2 ЦЕЛИ, ШЛЕЙФЫ, ЧАСТИЦЫ)
+     * ============================================================================
+     */
+    function drawBackground(w, h, dt) {
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      if (state.isProMode) {
+        bgGrad.addColorStop(0, "#0b041c");
+        bgGrad.addColorStop(0.46, "#1f083b");
+        bgGrad.addColorStop(0.75, "#3a0b4e");
+        bgGrad.addColorStop(1, "#090414");
+      } else {
+        bgGrad.addColorStop(0, "#0d0618");
+        bgGrad.addColorStop(0.48, "#1e0c36");
+        bgGrad.addColorStop(0.76, "#2c1145");
+        bgGrad.addColorStop(1, "#090412");
+      }
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      const horizonY = h * 0.62;
+      const sunRadius = Math.min(w, h) * 0.23;
+      const sunGrad = ctx.createLinearGradient(0, horizonY - sunRadius, 0, horizonY + sunRadius * 0.4);
+      sunGrad.addColorStop(0, "#fff3b0");
+      sunGrad.addColorStop(0.45, "#ffb703");
+      sunGrad.addColorStop(1, "#ff2a85");
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(w * 0.5, horizonY - sunRadius * 0.12, sunRadius, 0, Math.PI * 2);
+      ctx.fillStyle = sunGrad;
+      ctx.globalAlpha = state.isProMode ? 0.55 : 0.35;
+      ctx.fill();
+
+      ctx.fillStyle = state.isProMode ? "#1f083b" : "#1e0c36";
+      ctx.globalAlpha = 0.85;
+      for (let i = 0; i < 6; i++) {
+        const stripeY = horizonY - sunRadius * 0.1 + i * (sunRadius * 0.13);
+        const stripeH = 2 + i * 1.1;
+        ctx.fillRect(w * 0.5 - sunRadius, stripeY, sunRadius * 2, stripeH);
+      }
+      ctx.restore();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, horizonY, w, h - horizonY);
+      ctx.clip();
+
+      const gridColor = state.isProMode ? "rgba(0, 240, 255, 0.24)" : "rgba(255, 42, 133, 0.18)";
+      ctx.strokeStyle = gridColor;
+      ctx.lineWidth = 1.2;
+
+      const numVLines = 12;
+      for (let i = -numVLines; i <= numVLines; i++) {
+        const topX = w * 0.5 + i * 24;
+        const botX = w * 0.5 + i * 95;
+        ctx.beginPath();
+        ctx.moveTo(topX, horizonY);
+        ctx.lineTo(botX, h);
+        ctx.stroke();
+      }
+
+      const speed = state.isProMode ? 95 : 32;
+      state.gridOffset = (state.gridOffset + dt * speed) % 36;
+      for (let y = horizonY + state.gridOffset; y < h; y += 36) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawTargets(now) {
+      state.targets.forEach((t, idx) => {
+        if (!t) return;
+        t.scale = Math.min(1, t.scale + 0.16);
+
+        const elapsed = now - t.spawnTime;
+        const lifeRatio = Math.max(0, 1 - elapsed / t.lifeDuration);
+
+        // Шлейф движения (в 60 Гц мутный серый, в 240 Гц яркий неоновый)
+        t.trail.forEach((pt, i) => {
+          const ratio = (i + 1) / t.trail.length;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, t.radius * (state.isProMode ? 0.55 : 0.85) * ratio, 0, Math.PI * 2);
+          ctx.fillStyle = state.isProMode
+            ? `rgba(0, 240, 255, ${ratio * 0.18})`
+            : `rgba(161, 161, 170, ${ratio * 0.34})`;
+          ctx.fill();
+        });
+
+        ctx.save();
+        ctx.translate(t.x, t.y);
+        ctx.scale(t.scale, t.scale);
+
+        // Кольцо оставшегося времени жизни цели
+        ctx.beginPath();
+        ctx.arc(0, 0, t.radius + 7, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * lifeRatio);
+        ctx.strokeStyle = state.isProMode ? "rgba(0, 240, 255, 0.8)" : "rgba(255, 183, 3, 0.65)";
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        if (state.isProMode) {
+          const accent = idx === 0 ? "#00f0ff" : "#ff2a85";
+          ctx.shadowColor = accent;
+          ctx.shadowBlur = 22;
+
+          ctx.beginPath();
+          ctx.arc(0, 0, t.radius, 0, Math.PI * 2);
+          ctx.fillStyle = idx === 0 ? "#ff2a85" : "#00b4d8";
+          ctx.fill();
+
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "#ffffff";
+          ctx.stroke();
+
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(0, 0, t.radius * 0.42, 0, Math.PI * 2);
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(0, 0, t.radius, 0, Math.PI * 2);
+          ctx.fillStyle = idx === 0 ? "#a1a1aa" : "#71717a";
+          ctx.fill();
+
+          ctx.lineWidth = 2.5;
+          ctx.strokeStyle = "#e4e4e7";
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(0, 0, t.radius * 0.38, 0, Math.PI * 2);
+          ctx.fillStyle = "#27272a";
+          ctx.fill();
+        }
+
+        ctx.restore();
+      });
+    }
+
+    function drawParticlesAndText(dt) {
+      for (let i = state.particles.length - 1; i >= 0; i--) {
+        const p = state.particles[i];
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.alpha -= p.decay * dt;
+        if (p.alpha <= 0) {
+          state.particles.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+        const ft = state.floatingTexts[i];
+        ft.y += ft.vy * dt;
+        ft.alpha -= 1.35 * dt;
+        if (ft.alpha <= 0) {
+          state.floatingTexts.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, ft.alpha);
+        ctx.font = `italic 800 ${Math.round(16 * ft.scale)}px "Russo One", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = ft.color;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
+        ctx.shadowBlur = 8;
+        ctx.fillText(ft.text, ft.x, ft.y);
+        ctx.restore();
+      }
+    }
+
+    function gameLoop(now) {
+      if (!state.lastFrameTime) state.lastFrameTime = now;
+      const dt = Math.min(0.05, (now - state.lastFrameTime) / 1000);
+      state.lastFrameTime = now;
+
+      const rect = appShell.getBoundingClientRect();
+      const w = rect.width || 390;
+      const h = rect.height || 700;
+
+      if (state.screen === "playing") {
+        state.timeLeft = Math.max(0, state.timeLeft - dt);
+        document.getElementById("hud-timer").textContent = state.timeLeft.toFixed(1);
+        document.getElementById("hud-progress").style.width = `${(state.timeLeft / ROUND_DURATION) * 100}%`;
+
+        if (state.timeLeft <= SWITCH_TIME && !state.isProMode) {
+          activateOverdriveMode();
+        }
+
+        const topBound = 130;
+        const botBound = h - 76;
+
+        for (let i = 0; i < state.targets.length; i++) {
+          const t = state.targets[i];
+          if (!t) continue;
+
+          if (now - t.spawnTime >= t.lifeDuration) {
+            replaceTarget(i);
+            continue;
+          }
+
+          t.trail.push({ x: t.x, y: t.y });
+          const maxTrail = state.isProMode ? 4 : 9;
+          if (t.trail.length > maxTrail) t.trail.shift();
+
+          t.x += t.vx * dt;
+          t.y += t.vy * dt;
+
+          if (t.x - t.radius < 22) {
+            t.x = 22 + t.radius;
+            t.vx = Math.abs(t.vx);
+          } else if (t.x + t.radius > w - 22) {
+            t.x = w - 22 - t.radius;
+            t.vx = -Math.abs(t.vx);
+          }
+
+          if (t.y - t.radius < topBound) {
+            t.y = topBound + t.radius;
+            t.vy = Math.abs(t.vy);
+          } else if (t.y + t.radius > botBound) {
+            t.y = botBound - t.radius;
+            t.vy = -Math.abs(t.vy);
+          }
+        }
+
+        if (state.timeLeft <= 0) {
+          finishGame();
+        }
+      }
+
+      drawBackground(w, h, dt);
+      if (state.screen === "playing") {
+        drawTargets(now);
+      }
+      drawParticlesAndText(dt);
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    /**
+     * ============================================================================
+     * 6. ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ (ПРАВИЛА, КОПИРОВАНИЕ, ШЕРИНГ, OZON)
+     * ============================================================================
+     */
+    function toggleRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        openRulesModal();
+      } else {
+        closeRulesModal();
+      }
+    }
+
+    function openRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      if (modal) modal.classList.remove("hidden");
+      safeHaptic("impact", "light");
+    }
+
+    function closeRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function copyPromo() {
+      const code = state.currentPromo;
+      try {
+        const tempInput = document.createElement("input");
+        tempInput.value = code;
+        tempInput.style.position = "fixed";
+        tempInput.style.opacity = "0";
+        document.body.appendChild(tempInput);
+        tempInput.focus();
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      } catch (e) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).catch(() => {});
+        }
+      }
+
+      safeHaptic("notification", "success");
+      showToast(`Промокод ${code} скопирован! Примените в корзине Ozon`);
+      trackEvent("promo_copy", { promo: code, discount: state.currentDiscount });
+    }
+
+    function handleOzonClick(event) {
+      const targetUrl = buildOzonTrackedUrl(state.selectedMonitor, state.currentPromo);
+      trackEvent("ozon_click", {
+        tier: state.selectedMonitor.tier,
+        promo: state.currentPromo,
+        discount: state.currentDiscount,
+        url: targetUrl
+      });
+
+      if (tg && typeof tg.openLink === "function") {
+        event.preventDefault();
+        tg.openLink(targetUrl, { try_instant_view: false });
+      }
+    }
+
+    function shareChallenge() {
+      const avgReaction = getAdjustedAvgReaction();
+
+      if (!state.referralBonusApplied) {
+        state.referralBonusApplied = true;
+        state.currentDiscount = state.selectedMonitor.baseDiscount + 3;
+        state.currentPromo = `${state.selectedMonitor.promoBase}-VIP`;
+
+        document.getElementById("res-discount-badge").textContent = `СКИДКА ${state.currentDiscount}%`;
+        document.getElementById("res-promo-code").textContent = state.currentPromo;
+        document.getElementById("ozon-buy-link").href = buildOzonTrackedUrl(state.selectedMonitor, state.currentPromo);
+
+        const shareBtn = document.getElementById("btn-share-challenge");
+        const shareIcon = document.getElementById("share-btn-icon");
+        const shareText = document.getElementById("share-btn-text");
+        shareBtn.className = "w-full py-2.5 px-3 rounded-xl bg-cyan-400/20 border border-cyan-300/60 text-cyan-200 font-bold text-[11.5px] transition flex items-center justify-center gap-2 cursor-pointer";
+        shareIcon.textContent = "✓";
+        shareText.textContent = `Бонус +3% активирован! Скидка ${state.currentDiscount}%`;
+
+        safeHaptic("notification", "success");
+        showToast(`Бонус +3% начислен! Ваша скидка: ${state.currentDiscount}%`);
+      }
+
+      const botLink = APP_CONFIG.APP_SHORT_NAME
+        ? `https://t.me/${APP_CONFIG.BOT_USERNAME}/${APP_CONFIG.APP_SHORT_NAME}?startapp=challenge_${sessionMeta.userId}`
+        : `https://t.me/${APP_CONFIG.BOT_USERNAME}?startapp=challenge_${sessionMeta.userId}`;
+      const text = `Моя реакция в DIGMA PRO Арена 240 Гц — ${avgReaction} мс (${state.score} очков)! Попробуй побить мой рекорд и забери скидку на игровой монитор DIGMA PRO на Ozon:`;
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(text)}`;
+
+      trackEvent("share_challenge", { avgReaction, newDiscount: state.currentDiscount });
+
+      if (tg && typeof tg.openTelegramLink === "function") {
+        tg.openTelegramLink(shareUrl);
+      } else {
+        window.open(shareUrl, "_blank", "noopener,noreferrer");
+      }
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById("app-toast");
+      if (!toast) return;
+      toast.textContent = message;
+      toast.style.opacity = "1";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 3000);
+    }
+
+    // Экспортируем обработчики в глобальную область видимости
+    window.startGame = startGame;
+    window.goToStart = goToStart;
+    window.toggleRulesModal = toggleRulesModal;
+    window.openRulesModal = openRulesModal;
+    window.closeRulesModal = closeRulesModal;
+    window.toggleSound = toggleSound;
+    window.copyPromo = copyPromo;
+    window.handleOzonClick = handleOzonClick;
+    window.shareChallenge = shareChallenge;
+
+    // Старт приложения при загрузке окна
+    window.addEventListener("load", () => {
+      resizeCanvas();
+      initTelegramApp();
+      requestAnimationFrame(gameLoop);
+    });
+  </script>
+</body>
+</html>
