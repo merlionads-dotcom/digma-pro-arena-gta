@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DIGMA PRO — Vice 240Hz Reflex Arena</title>
+  <!-- Официальный Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Шрифты с поддержкой кириллицы -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Oswald:wght@600;700&family=Russo+One&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Oswald', 'sans-serif'],
+            gta: ['Russo One', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0b0516;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      touch-action: manipulation;
+      overscroll-behavior: none;
+    }
+
+    /* Основной контейнер приложения (на мобильном 100%, на ПК центрируется) */
+    #app-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      overflow: hidden;
+      background: #0d0618;
+      box-shadow: 0 0 80px rgba(255, 42, 133, 0.18);
+    }
+
+    @media (min-width: 640px) {
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(255, 42, 133, 0.16), transparent 45%),
+          radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.14), transparent 45%),
+          #06030c;
+      }
+      #app-shell {
+        height: min(94vh, 840px);
+        max-width: 430px;
+        border-radius: 34px;
+        border: 5px solid #241938;
+      }
+    }
+
+    /* Полноразмерный игровой Canvas */
+    #game-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Слой интерфейса поверх Canvas */
+    .ui-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Фирменный неоновый градиент текста (запас справа, чтобы наклон курсива не обрезался background-clip) */
+    .gta-gradient-text {
+      display: inline-block;
+      padding: 0 0.2em 0 0.04em;
+      background: linear-gradient(95deg, #fff6d6 0%, #ffb703 45%, #ff2a85 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gta-cyan-text {
+      display: inline-block;
+      padding: 0 0.2em 0 0.04em;
+      background: linear-gradient(95deg, #ffffff 0%, #00f0ff 55%, #ff2a85 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Главная кнопка CTA */
+    .gta-cta {
+      background: linear-gradient(90deg, #ff2a85 0%, #ff6b35 52%, #ffb703 100%);
+      box-shadow: 0 10px 30px rgba(255, 42, 133, 0.45);
+    }
+
+    /* Блик на кнопке */
+    @keyframes sheenMove {
+      0%, 72% { transform: translateX(-150%) skewX(-22deg); }
+      100% { transform: translateX(260%) skewX(-22deg); }
+    }
+    .btn-sheen::after {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 42%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+      animation: sheenMove 3.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* Эффект хроматической аберрации и вспышки при "Дропе" на 240 Гц */
+    @keyframes overdriveFlash {
+      0% { opacity: 0; transform: scale(0.85); filter: blur(8px); }
+      18% { opacity: 1; transform: scale(1.06); filter: blur(0px); }
+      80% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.12); filter: blur(4px); }
+    }
+    .animate-overdrive {
+      animation: overdriveFlash 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .chromatic-text {
+      text-shadow: -3px 0 #ff2a85, 3px 0 #00f0ff, 0 0 28px rgba(0, 240, 255, 0.75);
+    }
+
+    /* Анимация тряски экрана (Screen Shake) */
+    @keyframes shakeLight {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-2px, 2px); }
+      50% { transform: translate(2px, -2px); }
+      75% { transform: translate(-2px, -1px); }
+    }
+    @keyframes shakeHeavy {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-6px, 4px); }
+      40% { transform: translate(6px, -5px); }
+      60% { transform: translate(-4px, -3px); }
+      80% { transform: translate(4px, 3px); }
+    }
+    .shake-light { animation: shakeLight 0.12s linear; }
+    .shake-heavy { animation: shakeHeavy 0.32s ease-out; }
+
+    /* Выезд модалки */
+    @keyframes sheetUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-sheet {
+      animation: sheetUp 0.24s ease-out forwards;
+    }
+
+    /* Появление экрана результатов */
+    @keyframes missionPassedPop {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-results {
+      animation: missionPassedPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Звёзды розыска */
+    .star-active {
+      color: #ffb703;
+      text-shadow: 0 0 14px rgba(255, 183, 3, 0.85);
+      transform: scale(1.15);
+    }
+    .star-inactive {
+      color: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Скрытие скроллбара для компактных экранов */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Корпус игры -->
+  <div id="app-shell">
+    <!-- Единый Canvas: ретровейв-фон, 2 цели, частицы, плавающий текст -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Слой затемнения для читаемости стартового и финального экранов -->
+    <div id="backdrop-dim" class="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-[#130624]/75 via-[#130624]/50 to-[#0a0414]/90 transition-opacity duration-500"></div>
+
+    <!-- Вспышка при переходе на 240 Гц -->
+    <div id="screen-flash" class="pointer-events-none absolute inset-0 z-[25] bg-cyan-300 opacity-0 transition-opacity duration-300"></div>
+
+    <!-- =============================================================== -->
+    <!-- ПОСТОЯННАЯ ВЕРХНЯЯ ПАНЕЛЬ БРЕНДА (ПОВЕРХ МОДАЛКИ ПРАВИЛ z-50)   -->
+    <!-- =============================================================== -->
+    <header id="top-bar" class="absolute top-0 left-0 right-0 z-50 px-5 pt-4 pb-2 flex items-center justify-between pointer-events-none">
+      <div class="flex items-center gap-2.5 pointer-events-auto">
+        <!-- Знак-шеврон Λ -->
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500 to-amber-400 p-[1.5px] shadow-lg shadow-pink-500/30 shrink-0">
+          <div class="w-full h-full rounded-[10px] bg-[#16082a] flex items-center justify-center">
+            <svg class="w-4 h-4 text-amber-300" viewBox="0 0 24 24" fill="none">
+              <path d="M4.5 20L12 4L19.5 20H16.3L12 10.6L7.7 20H4.5Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <div class="whitespace-nowrap">
+          <div class="font-gta text-sm tracking-wider text-white leading-none whitespace-nowrap">
+            DIGMA <span class="text-pink-400">PRO</span>
+          </div>
+          <div class="text-[9.5px] font-mono uppercase tracking-widest text-cyan-300/85 mt-0.5 whitespace-nowrap">
+            АРЕНА РЕАКЦИИ 240 ГЦ
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pointer-events-auto">
+        <span id="source-badge" class="hidden px-2.5 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/40 text-cyan-200 font-mono text-[9.5px] font-bold whitespace-nowrap">
+          OZON QR
+        </span>
+        <button
+          id="btn-rules-toggle"
+          type="button"
+          onclick="toggleRulesModal()"
+          class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md flex items-center justify-center text-white text-sm font-bold transition active:scale-95 cursor-pointer"
+          aria-label="Правила игры"
+        >
+          ?
+        </button>
+        <button
+          id="btn-sound-top"
+          type="button"
+          onclick="toggleSound()"
+          class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md flex items-center justify-center text-cyan-300 transition active:scale-95 cursor-pointer"
+          aria-label="Переключить звук"
+        >
+          <svg class="sound-on-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zm4.54 3.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73"/></svg>
+          <svg class="sound-off-icon w-4 h-4 hidden text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zm12 4l-6 6m0-6l6 6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- =============================================================== -->
+    <!-- 1. СТАРТОВЫЙ ЭКРАН (ВИЗУАЛ GTA VICE + ПРИЗОВЫЕ МОНИТОРЫ)        -->
+    <!-- =============================================================== -->
+    <section id="screen-start" class="ui-layer px-5 pt-16 pb-6 justify-between overflow-y-auto no-scrollbar">
+      <!-- Главный Hero-блок -->
+      <div class="my-auto py-3">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-400/15 border border-cyan-400/35 text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-300 mb-3">
+          <span>⚡</span> МИССИЯ: 20&nbsp;СЕКУНД • 2&nbsp;ЦЕЛИ
+        </div>
+        <h1 class="font-gta italic uppercase text-[26px] sm:text-[32px] leading-[1.12] tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.75)] mb-3">
+          ПРОВЕРЬ <span class="gta-gradient-text">РЕАКЦИЮ</span><br/>И ВЫИГРАЙ ДО&nbsp;<span class="whitespace-nowrap">-15%</span>
+        </h1>
+        <p class="text-[12.5px] leading-relaxed text-purple-100/85 max-w-[320px] mb-5">
+          Сбивай сразу <strong class="text-white">две неоновые цели</strong>: сравни лаги <strong class="text-zinc-200 whitespace-nowrap">60&nbsp;Гц</strong> с плавностью <strong class="text-cyan-300 whitespace-nowrap">240&nbsp;Гц</strong>, копи турбо-комбо и забери промокод на Ozon.
+        </p>
+
+        <!-- Блок призов через «Звёзды розыска» и точные пороги реакции -->
+        <div class="mb-2">
+          <div class="flex items-center justify-between mb-2.5">
+            <span class="text-[10.5px] font-mono uppercase tracking-wider text-purple-200/80">Чем быстрее реакция — тем выше приз</span>
+            <button type="button" onclick="toggleRulesModal()" class="text-[11px] font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-4 cursor-pointer">
+              Правила
+            </button>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <!-- 1 звезда: ≥ 520 мс -->
+            <div class="rounded-2xl bg-black/45 border border-white/15 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
+              <div>
+                <div class="text-xs tracking-tighter text-amber-400 mb-1">★<span class="text-white/20">★★</span></div>
+                <div class="font-display text-lg font-bold text-white leading-none whitespace-nowrap">144&nbsp;Гц</div>
+                <div class="text-[10px] text-purple-200/75 mt-1">23.8" IPS</div>
+                <div class="text-[9px] font-mono text-zinc-400 mt-0.5 whitespace-nowrap">≥&nbsp;520&nbsp;мс</div>
+              </div>
+              <div class="mt-2.5 py-1 rounded-lg bg-white/10 font-mono text-xs font-bold text-white">-10%</div>
+            </div>
+
+            <!-- 2 звезды: 390–519 мс -->
+            <div class="rounded-2xl bg-black/50 border border-cyan-400/35 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
+              <div>
+                <div class="text-xs tracking-tighter text-amber-400 mb-1">★★<span class="text-white/20">★</span></div>
+                <div class="font-display text-lg font-bold text-cyan-200 leading-none whitespace-nowrap">165&nbsp;Гц</div>
+                <div class="text-[10px] text-purple-200/80 mt-1">Art L 27"</div>
+                <div class="text-[9px] font-mono text-cyan-300/80 mt-0.5 whitespace-nowrap">390–519&nbsp;мс</div>
+              </div>
+              <div class="mt-2.5 py-1 rounded-lg bg-cyan-400/20 border border-cyan-400/40 font-mono text-xs font-bold text-cyan-200">-12%</div>
+            </div>
+
+            <!-- 3 звезды: < 390 мс -->
+            <div class="relative rounded-2xl bg-gradient-to-b from-pink-500/30 via-purple-900/55 to-black/65 border border-amber-400/80 backdrop-blur-md p-2.5 flex flex-col justify-between text-center shadow-[0_0_24px_rgba(255,42,133,0.3)]">
+              <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-pink-500 text-zinc-950 text-[8px] font-black uppercase tracking-wider whitespace-nowrap">
+                ТОП ПРИЗ
+              </div>
+              <div class="pt-1">
+                <div class="text-xs tracking-tighter text-amber-300 mb-1">★★★</div>
+                <div class="font-display text-xl font-bold text-amber-300 leading-none whitespace-nowrap">240&nbsp;Гц</div>
+                <div class="text-[10px] font-semibold text-white mt-1">Vision L 31.5"</div>
+                <div class="text-[9px] font-mono text-amber-200 font-bold mt-0.5 whitespace-nowrap">&lt;&nbsp;390&nbsp;мс</div>
+              </div>
+              <div class="mt-2.5 py-1 rounded-lg bg-white font-mono text-xs font-black text-zinc-950">-15%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Нижний блок: CTA + онлайн -->
+      <div class="space-y-3 pt-2">
+        <button
+          type="button"
+          onclick="startGame()"
+          class="gta-cta btn-sheen relative overflow-hidden w-full py-4 rounded-2xl text-white font-gta italic tracking-wider text-[15px] uppercase flex items-center justify-center gap-2 active:scale-[0.97] transition cursor-pointer"
+        >
+          <span>▶</span>
+          <span>НАЧАТЬ МИССИЮ (20 СЕК)</span>
+        </button>
+
+        <div class="flex items-center justify-center gap-2 text-xs text-purple-200/75">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>В городе сейчас: <strong class="text-white font-mono">1 482</strong> игрока</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- 2. ИГРОВОЙ HUD (ПОЯВЛЯЕТСЯ ВО ВРЕМЯ РАУНДА)                      -->
+    <!-- =============================================================== -->
+    <section id="screen-hud" class="hidden pointer-events-none ui-layer justify-between px-4 pt-4 pb-5">
+      <!-- Верхняя панель HUD -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Индикатор текущей частоты -->
+          <div id="hud-mode-badge" class="px-3 py-1.5 rounded-xl bg-black/55 border border-white/15 backdrop-blur-md flex items-center gap-2 transition-all duration-300">
+            <span id="hud-mode-dot" class="w-2 h-2 rounded-full bg-zinc-400"></span>
+            <span id="hud-mode-text" class="font-mono text-[11px] font-bold tracking-wider text-zinc-200">60 ГЦ • ЛАГ</span>
+          </div>
+
+          <!-- Таймер по центру -->
+          <div class="px-3.5 py-1 rounded-xl bg-black/60 border border-white/15 backdrop-blur-md text-center min-w-[78px]">
+            <div id="hud-timer" class="font-mono text-lg font-extrabold tracking-tight text-white leading-none">20.0</div>
+            <div class="text-[8.5px] font-mono uppercase text-purple-300/75 mt-0.5">СЕК</div>
+          </div>
+
+          <!-- Звук во время игры (кликабельный) -->
+          <button
+            type="button"
+            onclick="toggleSound()"
+            class="pointer-events-auto w-9 h-9 rounded-xl bg-black/55 border border-white/15 backdrop-blur-md flex items-center justify-center text-cyan-300 active:scale-95 transition cursor-pointer"
+            aria-label="Звук"
+          >
+            <svg class="sound-on-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zm4.54 3.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73"/></svg>
+            <svg class="sound-off-icon w-4 h-4 hidden text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zm12 4l-6 6m0-6l6 6"/></svg>
+          </button>
+        </div>
+
+        <!-- Вторая строка HUD: Звёзды розыска + Прогресс Турбо + Очки -->
+        <div class="flex items-center justify-between px-0.5 gap-1.5">
+          <!-- Звёзды розыска (по реальной скорости реакции) -->
+          <div class="flex items-center gap-1 bg-black/50 px-2.5 py-1 rounded-lg border border-white/10">
+            <span id="star-1" class="text-sm transition-all duration-300 star-inactive">★</span>
+            <span id="star-2" class="text-sm transition-all duration-300 star-inactive">★</span>
+            <span id="star-3" class="text-sm transition-all duration-300 star-inactive">★</span>
+            <span id="hud-rt-live" class="ml-1 font-mono text-[10px] text-cyan-300">— мс</span>
+          </div>
+
+          <!-- Серия до турбо (3 точки) + бейдж TURBO x2/x3/x4 + счёт -->
+          <div class="flex items-center gap-1.5">
+            <!-- 3 индикатора до следующего уровня турбо -->
+            <div class="flex items-center gap-1 bg-black/50 px-2 py-1 rounded-lg border border-white/10" title="3 попадания подряд = TURBO">
+              <span id="pip-1" class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all"></span>
+              <span id="pip-2" class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all"></span>
+              <span id="pip-3" class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all"></span>
+            </div>
+
+            <div id="hud-combo-wrap" class="hidden px-2 py-1 rounded-lg bg-gradient-to-r from-pink-500 to-amber-400 text-zinc-950 font-mono text-[10px] font-black shadow-[0_0_12px_rgba(255,42,133,0.6)]">
+              ТУРБО x<span id="hud-combo">2</span>
+            </div>
+
+            <div class="font-mono text-[11px] text-purple-200/90 bg-black/50 px-2.5 py-1 rounded-lg border border-white/10">
+              <strong id="hud-score" class="text-white">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Прогресс-бар раунда с отметкой перехода 240 Гц ровно посередине -->
+        <div class="relative w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div id="hud-progress" class="h-full bg-gradient-to-r from-zinc-400 via-pink-500 to-cyan-400 transition-all duration-75" style="width: 100%;"></div>
+          <!-- Метка 10 сек (50%) -->
+          <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-amber-300 shadow-[0_0_8px_#ffb703]"></div>
+        </div>
+      </div>
+
+      <!-- Подсказка внизу экрана -->
+      <div class="text-center">
+        <span id="hud-bottom-hint" class="inline-block px-3 py-1 rounded-full bg-black/50 border border-white/10 font-mono text-[10px] tracking-wider uppercase text-purple-200/85">
+          ФАЗА 1: 60 ГЦ • СБИВАЙ ОБЕ ЦЕЛИ БЕЗ ПРОМАХОВ (3 = ТУРБО)
+        </span>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- 2.5 БАННЕР ПЕРЕХОДА НА 240 ГЦ НА 10-Й СЕКУНДЕ                   -->
+    <!-- =============================================================== -->
+    <div id="overdrive-banner" class="hidden pointer-events-none absolute inset-0 z-[22] flex flex-col items-center justify-center px-6 text-center">
+      <div id="overdrive-inner" class="space-y-1">
+        <div class="inline-block px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-300/60 font-mono text-[11px] font-bold uppercase tracking-widest text-cyan-200">
+          ⚡ ПЕРЕКЛЮЧЕНИЕ МОНИТОРА
+        </div>
+        <div class="font-gta italic uppercase text-5xl sm:text-6xl text-white chromatic-text leading-none tracking-tight">
+          240 ГЦ
+        </div>
+        <div class="font-gta italic uppercase text-2xl gta-gradient-text tracking-wider">
+          РЕЖИМ ФОРСАЖА!
+        </div>
+        <div class="font-mono text-xs text-cyan-200/95 pt-1">
+          0 МС ЗАДЕРЖКА • 250 ОЧКОВ • ТУРБО АКТИВЕН
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- 3. ЭКРАН РЕЗУЛЬТАТОВ (МИССИЯ ВЫПОЛНЕНА + OZON + ВЫЗОВ ДРУГУ)    -->
+    <!-- =============================================================== -->
+    <section id="screen-results" class="hidden ui-layer px-5 pt-16 pb-5 justify-between overflow-y-auto no-scrollbar">
+      <div id="results-card" class="my-auto space-y-3">
+        <!-- Заголовок МИССИЯ ВЫПОЛНЕНА + Ранг -->
+        <div class="text-center">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 font-mono text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-1.5">
+            <span>★</span>
+            <span id="res-rank-badge">Ранг: ПРО-ГЕЙМЕР</span>
+          </div>
+          <h2 class="font-gta italic uppercase text-[26px] sm:text-[29px] leading-none gta-gradient-text drop-shadow-[0_4px_20px_rgba(255,42,133,0.45)]">
+            МИССИЯ ВЫПОЛНЕНА!
+          </h2>
+          <div id="res-stars" class="text-xl tracking-widest mt-1.5">★★★</div>
+        </div>
+
+        <!-- Главные метрики: Очки / Реакция (+комбо бонус) / Макс. комбо -->
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="rounded-xl bg-black/50 border border-white/12 p-2">
+            <div class="text-[9.5px] font-mono text-purple-200/70 uppercase">Очки</div>
+            <div id="res-score" class="font-mono text-base font-extrabold text-white">0</div>
+          </div>
+          <div class="rounded-xl bg-black/50 border border-cyan-400/35 p-2">
+            <div class="text-[9.5px] font-mono text-cyan-300 uppercase">Реакция</div>
+            <div id="res-reaction" class="font-mono text-base font-extrabold text-white">310 мс</div>
+            <div id="res-combo-bonus-tag" class="hidden text-[9px] font-mono text-amber-300 font-bold">комбо -20 мс</div>
+          </div>
+          <div class="rounded-xl bg-black/50 border border-white/12 p-2">
+            <div class="text-[9.5px] font-mono text-purple-200/70 uppercase">Макс. турбо</div>
+            <div id="res-boost" class="font-mono text-base font-extrabold text-pink-400">x4</div>
+          </div>
+        </div>
+
+        <!-- Сравнение 60 Гц vs 240 Гц -->
+        <div class="rounded-2xl bg-black/45 border border-white/12 backdrop-blur-md p-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[9.5px] font-mono uppercase tracking-wider text-purple-200/75">Сравнение фаз раунда</span>
+            <span id="res-phase-diff" class="px-2 py-0.5 rounded-md bg-cyan-400/15 border border-cyan-400/35 font-mono text-[9.5px] font-bold text-cyan-300">
+              +35% на 240 Гц
+            </span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="rounded-xl bg-white/[0.04] border border-white/10 px-2.5 py-2 flex items-center justify-between">
+              <div>
+                <div class="text-[9px] font-mono text-zinc-400">60 ГЦ (ЛАГ)</div>
+                <div id="res-rt-60" class="font-display text-lg font-bold text-zinc-200 leading-tight">480 мс</div>
+              </div>
+              <div class="text-[10px] font-mono text-zinc-400 text-right">
+                <div>Попад.</div>
+                <div id="res-hits-60" class="text-zinc-200 font-bold">0</div>
+              </div>
+            </div>
+            <div class="rounded-xl bg-cyan-400/10 border border-cyan-400/35 px-2.5 py-2 flex items-center justify-between">
+              <div>
+                <div class="text-[9px] font-mono text-cyan-300">240 ГЦ ФОРСАЖ</div>
+                <div id="res-rt-240" class="font-display text-lg font-bold text-white leading-tight">295 мс</div>
+              </div>
+              <div class="text-[10px] font-mono text-cyan-200/80 text-right">
+                <div>Попад.</div>
+                <div id="res-hits-240" class="text-white font-bold">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Подсказка, сколько мс не хватило до следующего монитора -->
+        <div id="res-next-tier-hint" class="hidden px-3 py-2 rounded-xl bg-amber-400/12 border border-amber-400/45 text-[11px] text-amber-200 flex items-center justify-between gap-2">
+          <span id="res-next-tier-text">Ускорься на 18 мс, чтобы открыть флагман Vision L 240 Гц (-15%)!</span>
+          <button type="button" onclick="startGame()" class="px-2.5 py-1 rounded-lg bg-amber-400 text-zinc-950 font-extrabold text-[10px] shrink-0 cursor-pointer">
+            Побить
+          </button>
+        </div>
+
+        <!-- Карточка подобранного монитора DIGMA PRO и промокода -->
+        <div class="rounded-2xl bg-gradient-to-b from-pink-500/25 via-[#1c0a33]/90 to-[#120622]/95 border border-amber-400/60 p-3.5 shadow-[0_0_28px_rgba(255,42,133,0.28)] space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-bold">Твой приз • DIGMA PRO</span>
+            <span id="res-discount-badge" class="px-2.5 py-0.5 rounded-lg bg-white text-zinc-950 font-mono text-[11px] font-black">СКИДКА 12%</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-16 h-12 rounded-lg bg-[#0c0417] border-2 border-cyan-300/70 flex flex-col items-center justify-center shrink-0 shadow-[0_0_16px_rgba(0,240,255,0.25)]">
+              <span id="res-mon-hz" class="font-mono text-[11px] font-black text-cyan-300 leading-none">165 Гц</span>
+              <span class="text-[8px] text-purple-200/80 mt-0.5">1 мс MPRT</span>
+            </div>
+            <div class="min-w-0">
+              <div id="res-mon-name" class="font-gta text-sm text-white leading-tight truncate">DIGMA PRO Art L 27"</div>
+              <div id="res-mon-specs" class="text-[10.5px] text-purple-200/80 mt-0.5 leading-snug">2560×1440 2K • IPS • 165 Гц • Антиблик</div>
+            </div>
+          </div>
+
+          <!-- Блок промокода с копированием в 1 тап -->
+          <div class="flex items-center justify-between gap-2 rounded-xl bg-black/55 border border-white/15 px-3 py-2">
+            <div>
+              <div class="text-[9px] font-mono uppercase text-purple-300/70">Промокод для Ozon (24 ч)</div>
+              <div id="res-promo-code" class="font-mono text-xs font-extrabold tracking-widest text-cyan-300">PRO165-ARTL</div>
+            </div>
+            <button
+              type="button"
+              onclick="copyPromo()"
+              class="px-3 py-1.5 rounded-lg bg-cyan-400 hover:bg-cyan-300 text-zinc-950 font-mono text-[10.5px] font-extrabold uppercase tracking-wider active:scale-95 transition cursor-pointer"
+            >
+              КОПИРОВАТЬ
+            </button>
+          </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="space-y-2 pt-0.5">
+          <a
+            id="ozon-buy-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleOzonClick(event)"
+            class="gta-cta btn-sheen relative overflow-hidden w-full py-3.5 rounded-2xl text-white font-gta italic tracking-wider text-xs sm:text-[13px] uppercase flex items-center justify-center gap-2 active:scale-[0.98] transition no-underline cursor-pointer"
+          >
+            <span>ЗАБРАТЬ МОНИТОР НА OZON СО СКИДКОЙ</span>
+            <span>↗</span>
+          </a>
+
+          <button
+            id="btn-share-challenge"
+            type="button"
+            onclick="shareChallenge()"
+            class="w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-purple-100 font-semibold text-[11.5px] active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span id="share-btn-icon">✈</span>
+            <span id="share-btn-text">Бросить вызов другу в Telegram (+3% к скидке)</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onclick="startGame()"
+              class="py-2.5 rounded-xl bg-cyan-400/15 hover:bg-cyan-400/25 border border-cyan-400/40 text-cyan-200 font-bold text-xs active:scale-[0.98] transition cursor-pointer"
+            >
+              ↻ Сыграть ещё раз
+            </button>
+            <button
+              type="button"
+              onclick="goToStart()"
+              class="py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs active:scale-[0.98] transition cursor-pointer"
+            >
+              В главное меню
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- 4. МОДАЛЬНОЕ ОКНО «ПРАВИЛА И СИСТЕМА ПОДСЧЕТА» (z-40)           -->
+    <!-- =============================================================== -->
+    <div id="rules-modal" class="hidden absolute inset-0 z-40 bg-black/80 backdrop-blur-sm flex items-end p-3 pt-16" onclick="if(event.target===this) closeRulesModal()">
+      <div class="animate-sheet w-full rounded-3xl bg-[#190a2d] border border-pink-500/45 p-5 shadow-2xl max-h-[80dvh] overflow-y-auto no-scrollbar space-y-3.5">
+        <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+          <span class="text-[11px] font-mono uppercase tracking-widest text-amber-300 font-bold">Правила и система подсчета</span>
+          <button type="button" onclick="closeRulesModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs flex items-center justify-center cursor-pointer" aria-label="Закрыть правила">✕</button>
+        </div>
+
+        <div class="space-y-2.5 text-xs text-purple-100/90 leading-relaxed">
+          <div class="rounded-xl bg-white/5 border border-white/10 p-3 space-y-1">
+            <div class="text-[10.5px] font-mono font-bold text-cyan-300 uppercase">1. Две цели и 2 фазы (20 секунд)</div>
+            <p><strong class="text-zinc-200">0–10 сек • Режим 60 Гц:</strong> на арене одновременно 2 движущиеся цели со шлейфом и задержкой клика. Попадание = <span class="font-mono text-white">100 очков</span>.</p>
+            <p><strong class="text-white">10–20 сек • DIGMA PRO 240 Гц Форсаж:</strong> 0 мс задержки, максимальная плавность. Попадание = <span class="font-mono text-cyan-300">250 очков</span>.</p>
+          </div>
+
+          <div class="rounded-xl bg-pink-500/10 border border-pink-500/35 p-3 space-y-1">
+            <div class="text-[10.5px] font-mono font-bold text-amber-300 uppercase">2. Турбо-комбо и буст реакции</div>
+            <p>Каждые <strong class="text-white">3 попадания подряд без промахов</strong> включают турбо: <span class="font-mono text-amber-300">ТУРБО x2 → x3 → x4</span> (работает и на 60 Гц, и после 10 сек на 240 Гц!). Промах по пустому полю сбрасывает серию.</p>
+            <div class="pt-1 text-[11px] font-mono text-purple-100/90 space-y-0.5">
+              <div>• Макс. турбо <span class="text-white">x2</span> → <span class="text-cyan-300">-10 мс</span> к итоговой реакции</div>
+              <div>• Макс. турбо <span class="text-white">x3</span> → <span class="text-cyan-300">-20 мс</span> к итоговой реакции</div>
+              <div>• Макс. турбо <span class="text-white">x4</span> → <span class="text-cyan-300">-30 мс</span> к итоговой реакции</div>
+            </div>
+          </div>
+
+          <div class="rounded-xl bg-white/5 border border-white/10 p-3 space-y-1.5">
+            <div class="text-[10.5px] font-mono font-bold text-cyan-300 uppercase">3. Призовые мониторы DIGMA PRO</div>
+            <div class="space-y-1 text-[11px]">
+              <div class="flex items-center justify-between py-1 border-b border-white/10">
+                <span><strong class="text-amber-300">★★★ &lt; 390 мс</strong> • Киберспорт</span>
+                <span class="font-mono text-white font-bold">Vision L 240 Гц (-15%)</span>
+              </div>
+              <div class="flex items-center justify-between py-1 border-b border-white/10">
+                <span><strong class="text-cyan-300">★★ 390–519 мс</strong> • ПРО-Геймер</span>
+                <span class="font-mono text-cyan-200 font-bold">Art L 27" 165 Гц (-12%)</span>
+              </div>
+              <div class="flex items-center justify-between py-1">
+                <span><strong class="text-zinc-200">★ ≥ 520 мс</strong> • Игрок</span>
+                <span class="font-mono text-zinc-300 font-bold">23.8" 144 Гц (-10%)</span>
+              </div>
+            </div>
+            <p class="text-[10.5px] text-purple-200/75 pt-0.5">
+              Дополнительные <strong class="text-white">+3% к скидке</strong> начисляются за отправку вызова другу в Telegram после финиша.
+            </p>
+          </div>
+        </div>
+
+        <button type="button" onclick="closeRulesModal()" class="gta-cta w-full py-3.5 rounded-xl font-gta italic text-xs tracking-wider text-white uppercase cursor-pointer">
+          ПОНЯТНО, В БОЙ!
+        </button>
+      </div>
+    </div>
+
+    <!-- Тост-уведомление (вместо alert) -->
+    <div id="app-toast" class="pointer-events-none absolute bottom-5 left-4 right-4 z-[60] px-4 py-2.5 rounded-xl bg-zinc-950/95 border border-cyan-400/50 text-xs font-semibold text-white shadow-2xl opacity-0 transition-all duration-250 text-center">
+      Сообщение
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * 1. БЛОК КОНФИГУРАЦИИ ДЛЯ ПРОДАКТ-МЕНЕДЖЕРА И ЗАПУСКА
+     * ============================================================================
+     */
+    const APP_CONFIG = {
+      BOT_USERNAME: "digma_pro_arena_bot",
+      APP_SHORT_NAME: "app",
+      OZON_VENDOR_PREFIX: "vendor_org_XXXXX",
+      TG_ANALYTICS_BOT_TOKEN: "",
+      TG_ANALYTICS_CHAT_ID: "",
+      GOOGLE_SHEETS_WEBHOOK_URL: ""
+    };
+
+    /**
+     * ============================================================================
+     * 2. КАТАЛОГ МОНИТОРОВ DIGMA PRO, ССЫЛКИ OZON И ПРОМОКОДЫ
+     * ============================================================================
+     */
+    const MONITOR_CATALOG = {
+      vision_l: {
+        key: "vision_l",
+        rank: "Ранг: КИБЕРСПОРТ (ТОП 5%)",
+        stars: 3,
+        discount: 15,
+        promo: "PRO240-VISION",
+        hzLabel: "240 Гц",
+        name: 'DIGMA PRO Vision L 31.5" (OLED)',
+        specs: "4K UHD • QD-OLED • 240 Гц • Серебристый",
+        baseUrl: "https://www.ozon.ru/product/digma-pro-31-5-monitor-vision-l-oled-3840x2160-4k-240-gts-serebristyy-1774815886/"
+      },
+      art_l: {
+        key: "art_l",
+        rank: "Ранг: ПРО-ГЕЙМЕР",
+        stars: 2,
+        discount: 12,
+        promo: "PRO165-ARTL",
+        hzLabel: "165 Гц",
+        name: 'DIGMA PRO Art L 27" (DM27SP03)',
+        specs: "2560×1440 2K • IPS • 165 Гц • Антиблик",
+        baseUrl: "https://www.ozon.ru/product/digma-pro-27-monitor-igrovoy-art-l-2560-1440-2k-s-chastotoy-165gts-antiblikovoe-pokrytie-dm27sp03-1383547488/"
+      },
+      gaming_144: {
+        key: "gaming_144",
+        rank: "Ранг: ИГРОК",
+        stars: 1,
+        discount: 10,
+        promo: "PRO144-START",
+        hzLabel: "144 Гц",
+        name: 'DIGMA PRO 23.8" Gaming',
+        specs: "1920×1080 Full HD • IPS • 144 Гц • Черный",
+        baseUrl: "https://www.ozon.ru/product/digma-pro-23-8-monitor-ips-1920x1080-144-gts-chernyy-3958432071/"
+      }
+    };
+
+    /**
+     * ============================================================================
+     * 3. ИНИЦИАЛИЗАЦИЯ TELEGRAM WEBAPP SDK И СКВОЗНОЙ АНАЛИТИКИ
+     * ============================================================================
+     */
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    let trafficSource = "direct";
+    let tgUserInfo = { id: "guest", username: "guest", first_name: "Гость" };
+
+    function initTelegramApp() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlStart = urlParams.get("tgWebAppStartParam") || urlParams.get("startapp");
+
+      if (tg) {
+        try {
+          tg.ready();
+          tg.expand();
+          if (tg.setHeaderColor) tg.setHeaderColor("#0b0516");
+          if (tg.setBackgroundColor) tg.setBackgroundColor("#0b0516");
+
+          if (tg.initDataUnsafe) {
+            if (tg.initDataUnsafe.start_param) {
+              trafficSource = tg.initDataUnsafe.start_param;
+            }
+            if (tg.initDataUnsafe.user) {
+              const u = tg.initDataUnsafe.user;
+              tgUserInfo = {
+                id: u.id || "guest",
+                username: u.username ? `@${u.username}` : "no_username",
+                first_name: u.first_name || "Игрок"
+              };
+            }
+          }
+        } catch (err) {
+          console.warn("Telegram WebApp init warning:", err);
+        }
+      }
+
+      if (trafficSource === "direct" && urlStart) {
+        trafficSource = urlStart;
+      }
+
+      const badge = document.getElementById("source-badge");
+      if (badge) {
+        if (trafficSource.toLowerCase().includes("ozon")) {
+          badge.textContent = "OZON QR";
+          badge.classList.remove("hidden");
+        } else if (trafficSource.toLowerCase().includes("challenge")) {
+          badge.textContent = "ВЫЗОВ ДРУГА";
+          badge.classList.remove("hidden");
+        }
+      }
+
+      trackEvent("app_open", { source: trafficSource });
+    }
+
+    function triggerHaptic(type = "light") {
+      if (tg && tg.HapticFeedback) {
+        try {
+          if (type === "success") {
+            tg.HapticFeedback.notificationOccurred("success");
+          } else {
+            tg.HapticFeedback.impactOccurred(type);
+          }
+          return;
+        } catch (e) {}
+      }
+      try {
+        if (navigator.vibrate) {
+          navigator.vibrate(type === "success" ? [25, 35, 50] : type === "medium" ? 18 : 10);
+        }
+      } catch (e) {}
+    }
+
+    function buildOzonTrackedUrl(monitorObj) {
+      const campaignTag = `${APP_CONFIG.OZON_VENDOR_PREFIX}_reflex_arena_${monitorObj.key}`;
+      const params = new URLSearchParams({
+        utm_source: "telegram_miniapp",
+        utm_medium: "game",
+        utm_campaign: campaignTag,
+        utm_content: trafficSource
+      });
+      return `${monitorObj.baseUrl}?${params.toString()}`;
+    }
+
+    function trackEvent(eventName, payload = {}) {
+      const eventRecord = {
+        timestamp: new Date().toISOString(),
+        event: eventName,
+        source: trafficSource,
+        user_id: tgUserInfo.id,
+        username: tgUserInfo.username,
+        ...payload
+      };
+
+      try {
+        const logs = JSON.parse(localStorage.getItem("digma_arena_analytics") || "[]");
+        logs.push(eventRecord);
+        localStorage.setItem("digma_arena_analytics", JSON.stringify(logs.slice(-100)));
+      } catch (e) {}
+
+      if (APP_CONFIG.TG_ANALYTICS_BOT_TOKEN && APP_CONFIG.TG_ANALYTICS_CHAT_ID) {
+        const titles = {
+          app_open: "📱 Открытие Mini App",
+          game_start: "🎮 Старт раунда",
+          game_finish: "🏁 Финиш матча",
+          promo_copy: "📋 Скопирован промокод",
+          ozon_click: "🛒 ПЕРЕХОД В OZON",
+          share_challenge: "🚀 Вызов другу в TG"
+        };
+        const title = titles[eventName] || eventName;
+        const lines = [
+          `<b>${title}</b>`,
+          `Источник: <code>${trafficSource}</code>`,
+          `Игрок: ${tgUserInfo.first_name} (${tgUserInfo.username})`
+        ];
+        if (payload.model) lines.push(`Монитор: <b>${payload.model}</b>`);
+        if (payload.reaction_ms) lines.push(`Реакция: <code>${payload.reaction_ms} мс</code>`);
+        if (payload.promo_code) lines.push(`Промокод: <code>${payload.promo_code}</code>`);
+
+        fetch(`https://api.telegram.org/bot${APP_CONFIG.TG_ANALYTICS_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: APP_CONFIG.TG_ANALYTICS_CHAT_ID,
+            text: lines.join("\n"),
+            parse_mode: "HTML"
+          }),
+          keepalive: true
+        }).catch(() => {});
+      }
+
+      if (APP_CONFIG.GOOGLE_SHEETS_WEBHOOK_URL) {
+        fetch(APP_CONFIG.GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(eventRecord),
+          keepalive: true
+        }).catch(() => {});
+      }
+    }
+
+    /**
+     * ============================================================================
+     * 4. ПРЕЖНИЙ ПРОЦЕДУРНЫЙ АУДИОДВИЖОК DIGMA PRO (WEB AUDIO API)
+     *    Сохранены все оригинальные звуки: фоновый пульс, 3-слойный хит,
+     *    турбо-аккорд, промах, разгон Overdrive и мягкий финальный аккорд.
+     * ============================================================================
+     */
+    let soundEnabled = true;
+    let audioCtx = null;
+    let bgBeatInterval = null;
+    let bgBeatStep = 0;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    // Короткий сигнал подтверждения при включении звука
+    function playSoundOnCue() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        [523.25, 783.99].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          const t = now + idx * 0.065;
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.14, t + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.17);
+        });
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.querySelectorAll(".sound-on-icon").forEach(el => el.classList.toggle("hidden", !soundEnabled));
+      document.querySelectorAll(".sound-off-icon").forEach(el => el.classList.toggle("hidden", soundEnabled));
+      triggerHaptic("light");
+
+      if (soundEnabled) {
+        playSoundOnCue();
+        if (state.screen === "playing" || state.screen === "drop") {
+          startBgPulse();
+        }
+      } else {
+        stopBgPulse();
+      }
+    }
+
+    function startBgPulse() {
+      stopBgPulse();
+      if (!soundEnabled || (state.screen !== "playing" && state.screen !== "drop")) return;
+      bgBeatStep = 0;
+
+      const scheduleNextBeat = () => {
+        if (!soundEnabled || (state.screen !== "playing" && state.screen !== "drop")) {
+          bgBeatInterval = null;
+          return;
+        }
+
+        // Во время короткого баннера 'drop' не играем бит, но НЕ обрываем таймер пульса!
+        if (state.screen === "playing") {
+          const ctx = getAudioCtx();
+          if (ctx) {
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const isPro = state.phase === 2;
+            const notes60 = [55, 55, 65.41, 55];
+            const notes240 = [110, 130.81, 146.83, 164.81, 110, 146.83, 164.81, 196];
+            const freq = isPro
+              ? notes240[bgBeatStep % notes240.length]
+              : notes60[bgBeatStep % notes60.length];
+
+            // Усиление и октавный акцент при активном турбо-комбо (3+ попадания подряд)
+            const comboBoost = Math.max(0, state.currentComboMult - 1);
+            const turboNoteMult = (comboBoost > 0 && bgBeatStep % 2 === 1) ? 1.5 : 1;
+
+            osc.type = (isPro || comboBoost > 0) ? "sawtooth" : "triangle";
+            osc.frequency.setValueAtTime(freq * turboNoteMult, now);
+
+            const filter = ctx.createBiquadFilter();
+            filter.type = "lowpass";
+            const cutoff = (isPro ? 900 : 280) + comboBoost * 280;
+            filter.frequency.setValueAtTime(cutoff, now);
+
+            const pulseVol = (isPro ? 0.048 : 0.036) + comboBoost * 0.015;
+            gain.gain.setValueAtTime(pulseVol, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.16);
+            bgBeatStep++;
+          }
+        }
+
+        const baseStepMs = state.phase === 2 ? 190 : 225;
+        const nextDelay = Math.max(125, baseStepMs - (state.currentComboMult - 1) * 20);
+        bgBeatInterval = setTimeout(scheduleNextBeat, nextDelay);
+      };
+
+      scheduleNextBeat();
+    }
+
+    function stopBgPulse() {
+      if (bgBeatInterval) {
+        clearTimeout(bgBeatInterval);
+        bgBeatInterval = null;
+      }
+    }
+
+    function playHitSound(isPro, streakCount = 1, comboMult = 1) {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const pitchBoost = Math.min(1.85, 1 + (streakCount - 1) * 0.085);
+        const volBoost = 1 + (comboMult - 1) * 0.2;
+
+        // Слой 1: плотный саб-удар
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = "sine";
+        subOsc.frequency.setValueAtTime((isPro ? 165 : 110) * Math.min(1.3, 1 + (comboMult - 1) * 0.1), now);
+        subOsc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+        subGain.gain.setValueAtTime(Math.min(0.32, 0.2 * volBoost), now);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        subOsc.start(now);
+        subOsc.stop(now + 0.14);
+
+        // Слой 2: основной щелчок (растет по тону и громкости в оба режима)
+        const clickOsc = ctx.createOscillator();
+        const clickGain = ctx.createGain();
+        clickOsc.type = (isPro || comboMult >= 2) ? "triangle" : "sawtooth";
+        const baseFreq = (isPro ? 540 : 270) * pitchBoost;
+        clickOsc.frequency.setValueAtTime(baseFreq, now);
+        clickOsc.frequency.exponentialRampToValueAtTime(baseFreq * (isPro || comboMult >= 2 ? 1.48 : 1.18), now + 0.095);
+
+        clickGain.gain.setValueAtTime(Math.min(0.26, (isPro ? 0.15 : 0.11) * volBoost), now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.105);
+
+        clickOsc.connect(clickGain);
+        clickGain.connect(ctx.destination);
+        clickOsc.start(now);
+        clickOsc.stop(now + 0.115);
+
+        // Слой 3: турбо-гармоника при активном комбо (3+ попадания подряд)
+        if (comboMult >= 2) {
+          const turboOsc = ctx.createOscillator();
+          const turboGain = ctx.createGain();
+          turboOsc.type = "sine";
+          const turboFreq = baseFreq * 1.5;
+          turboOsc.frequency.setValueAtTime(turboFreq, now);
+          turboOsc.frequency.exponentialRampToValueAtTime(turboFreq * 1.25, now + 0.11);
+
+          turboGain.gain.setValueAtTime(Math.min(0.16, 0.07 + (comboMult - 2) * 0.035), now);
+          turboGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+          turboOsc.connect(turboGain);
+          turboGain.connect(ctx.destination);
+          turboOsc.start(now);
+          turboOsc.stop(now + 0.13);
+        }
+      } catch (e) {}
+    }
+
+    function playComboUpSound(comboMult) {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const rootFreq = comboMult === 2 ? 523.25 : comboMult === 3 ? 659.25 : 783.99;
+        [rootFreq, rootFreq * 1.25, rootFreq * 1.5].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          const t = now + idx * 0.04;
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.13, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.19);
+        });
+      } catch (e) {}
+    }
+
+    function playMissSound() {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.linearRampToValueAtTime(75, now + 0.14);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      } catch (e) {}
+    }
+
+    function playOverdriveSound() {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const sweep = ctx.createOscillator();
+        const sweepGain = ctx.createGain();
+        sweep.type = "sawtooth";
+        sweep.frequency.setValueAtTime(180, now);
+        sweep.frequency.exponentialRampToValueAtTime(1180, now + 0.35);
+        sweepGain.gain.setValueAtTime(0.14, now);
+        sweepGain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+        sweep.connect(sweepGain);
+        sweepGain.connect(ctx.destination);
+        sweep.start(now);
+        sweep.stop(now + 0.4);
+
+        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + 0.08 + idx * 0.055);
+          gain.gain.setValueAtTime(0.11, now + 0.08 + idx * 0.055);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32 + idx * 0.055);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + 0.08 + idx * 0.055);
+          osc.stop(now + 0.34 + idx * 0.055);
+        });
+      } catch (e) {}
+    }
+
+    // Приятный теплый финальный аккорд с плавным затуханием
+    function playFinishSound() {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const chordNotes = [261.63, 329.63, 392.00, 493.88, 587.33, 783.99];
+        chordNotes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          osc.type = idx % 2 === 0 ? "sine" : "triangle";
+          const startTime = now + idx * 0.065;
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(1800, startTime);
+          filter.frequency.exponentialRampToValueAtTime(420, startTime + 1.45);
+
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.linearRampToValueAtTime(0.085, startTime + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.55);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + 1.6);
+        });
+      } catch (e) {}
+    }
+
+    /**
+     * ============================================================================
+     * 5. ИГРОВОЕ СОСТОЯНИЕ И МЕХАНИКА С ДВУМЯ ЦЕЛЯМИ
+     * ============================================================================
+     */
+    const GAME_DURATION = 20.0;
+    const SWITCH_TIME = 10.0;
+    const LAG_60HZ_MS = 80;      // Имитация инпут-лага на 60 Гц
+    const SIMULTANEOUS_TARGETS = 2; // Всегда ровно 2 активные цели на поле
+
+    const state = {
+      screen: "start",          // "start" | "playing" | "drop" | "results"
+      phase: 1,                 // 1 (60 Гц) | 2 (240 Гц)
+      timeLeft: GAME_DURATION,
+      score: 0,
+      hits: 0,
+      hits60: 0,
+      hits240: 0,
+      streak: 0,                // Подряд попаданий без промахов
+      currentComboMult: 1,      // 1, 2, 3, 4 (повышается каждые 3 попадания)
+      maxCombo: 1,
+      stars: 0,
+      reactionTimes: [],        // Все записанные реакции для расчёта приза
+      rt60List: [],
+      rt240List: [],
+      lastActionTime: 0,        // Момент последнего попадания/старта фазы (для честной реакции при 2 целях)
+
+      targets: [],
+      particles: [],
+      floatingTexts: [],
+      speedLines: [],
+      bgScroll: 0,
+      stutterTick: 0,
+      lastFrameTime: 0,
+      dropTimer: 0,
+      pendingLagTimeouts: []
+    };
+
+    let selectedMonitor = MONITOR_CATALOG.art_l;
+    let lastAvgReaction = 320;
+    let referralBonusApplied = false;
+
+    /**
+     * ============================================================================
+     * 6. CANVAS И АДАПТИВНЫЙ РЕНДЕРИНГ (VICE CITY SYNTHWAVE)
+     * ============================================================================
+     */
+    const shell = document.getElementById("app-shell");
+    const canvas = document.getElementById("game-canvas");
+    const ctx = canvas.getContext("2d");
+    let canvasW = 0;
+    let canvasH = 0;
+
+    function resizeCanvas() {
+      const rect = shell.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvasW = rect.width;
+      canvasH = rect.height;
+      canvas.width = Math.floor(canvasW * dpr);
+      canvas.height = Math.floor(canvasH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    // Генерация одной цели без пересечения со второй целью
+    function spawnTarget() {
+      const padX = 52;
+      const topSafe = 148;
+      const bottomSafe = 86;
+      const radius = state.phase === 1 ? 34 : 33;
+
+      let x = padX + Math.random() * Math.max(10, canvasW - padX * 2);
+      let y = topSafe + Math.random() * Math.max(10, canvasH - topSafe - bottomSafe);
+
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const cx = padX + Math.random() * Math.max(10, canvasW - padX * 2);
+        const cy = topSafe + Math.random() * Math.max(10, canvasH - topSafe - bottomSafe);
+        const tooClose = state.targets.some(t => Math.hypot(t.x - cx, t.y - cy) < radius * 2.8);
+        if (!tooClose) {
+          x = cx;
+          y = cy;
+          break;
+        }
+      }
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = state.phase === 1 ? 42 : 64;
+
+      state.targets.push({
+        id: Math.random().toString(36).slice(2),
+        x,
+        y,
+        renderX: x,
+        renderY: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius,
+        spawnTime: performance.now(),
+        lifetime: state.phase === 1 ? 2.8 : 2.5,
+        age: 0,
+        trail: [],
+        isPhase2: state.phase === 2
+      });
+    }
+
+    function ensureTwoTargets() {
+      while (state.targets.length < SIMULTANEOUS_TARGETS) {
+        spawnTarget();
+      }
+    }
+
+    function spawnParticles(x, y, colorPrimary, colorSecondary, count = 16) {
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const speed = 90 + Math.random() * 220;
+        state.particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: 2.5 + Math.random() * 3.5,
+          life: 1.0,
+          decay: 1.8 + Math.random() * 1.1,
+          color: i % 2 === 0 ? colorPrimary : colorSecondary
+        });
+      }
+    }
+
+    function spawnFloatingText(x, y, text, color = "#ffffff", size = 15) {
+      state.floatingTexts.push({
+        x,
+        y,
+        text,
+        color,
+        size,
+        life: 1.0,
+        vy: -56
+      });
+    }
+
+    function triggerShake(heavy = false) {
+      shell.classList.remove("shake-light", "shake-heavy");
+      void shell.offsetWidth;
+      shell.classList.add(heavy ? "shake-heavy" : "shake-light");
+    }
+
+    /**
+     * ============================================================================
+     * 7. УПРАВЛЕНИЕ ИГРОВЫМ ЦИКЛОМ И ПРАВИЛАМИ TURBO-КОМБО
+     * ============================================================================
+     */
+    function startGame() {
+      closeRulesModal();
+      getAudioCtx();
+
+      state.pendingLagTimeouts.forEach(clearTimeout);
+      state.pendingLagTimeouts = [];
+      stopBgPulse();
+
+      state.screen = "playing";
+      state.phase = 1;
+      state.timeLeft = GAME_DURATION;
+      state.score = 0;
+      state.hits = 0;
+      state.hits60 = 0;
+      state.hits240 = 0;
+      state.streak = 0;
+      state.currentComboMult = 1;
+      state.maxCombo = 1;
+      state.stars = 0;
+      state.reactionTimes = [];
+      state.rt60List = [];
+      state.rt240List = [];
+      state.lastActionTime = performance.now();
+      state.targets = [];
+      state.particles = [];
+      state.floatingTexts = [];
+      state.speedLines = [];
+      referralBonusApplied = false;
+
+      document.getElementById("top-bar").classList.add("hidden");
+      document.getElementById("screen-start").classList.add("hidden");
+      document.getElementById("screen-results").classList.add("hidden");
+      document.getElementById("screen-hud").classList.remove("hidden");
+      document.getElementById("overdrive-banner").classList.add("hidden");
+      document.getElementById("backdrop-dim").style.opacity = "0.18";
+
+      updateHudPhaseVisuals(1);
+      updateHudStats();
+      ensureTwoTargets();
+
+      triggerHaptic("medium");
+      trackEvent("game_start", { source: trafficSource });
+      startBgPulse();
+    }
+
+    function triggerOverdriveDrop() {
+      // Отменяем зависшие отложенные клики с 60 Гц, чтобы они не сбросили комбо
+      state.pendingLagTimeouts.forEach(clearTimeout);
+      state.pendingLagTimeouts = [];
+
+      state.screen = "drop";
+      state.phase = 2;
+      state.dropTimer = 0.88;
+      state.targets = [];
+
+      // Прежний фирменный звук разгона Overdrive
+      playOverdriveSound();
+      triggerShake(true);
+      triggerHaptic("success");
+
+      const flash = document.getElementById("screen-flash");
+      flash.style.opacity = "0.55";
+      setTimeout(() => { flash.style.opacity = "0"; }, 180);
+
+      const banner = document.getElementById("overdrive-banner");
+      const inner = document.getElementById("overdrive-inner");
+      banner.classList.remove("hidden");
+      inner.classList.remove("animate-overdrive");
+      void inner.offsetWidth;
+      inner.classList.add("animate-overdrive");
+
+      updateHudPhaseVisuals(2);
+    }
+
+    function updateHudPhaseVisuals(phase) {
+      const badge = document.getElementById("hud-mode-badge");
+      const dot = document.getElementById("hud-mode-dot");
+      const text = document.getElementById("hud-mode-text");
+      const hint = document.getElementById("hud-bottom-hint");
+
+      if (phase === 1) {
+        badge.className = "px-3 py-1.5 rounded-xl bg-black/55 border border-white/15 backdrop-blur-md flex items-center gap-2 transition-all duration-300";
+        dot.className = "w-2 h-2 rounded-full bg-zinc-400";
+        text.className = "font-mono text-[11px] font-bold tracking-wider text-zinc-200";
+        text.textContent = "60 ГЦ • ЛАГ";
+        hint.textContent = "ФАЗА 1: 60 ГЦ • СБИВАЙ ОБЕ ЦЕЛИ (3 ПОДРЯД = ТУРБО)";
+      } else {
+        badge.className = "px-3 py-1.5 rounded-xl bg-cyan-400/20 border border-cyan-300/70 backdrop-blur-md flex items-center gap-2 shadow-[0_0_18px_rgba(0,240,255,0.4)] transition-all duration-300";
+        dot.className = "w-2 h-2 rounded-full bg-cyan-300 animate-ping";
+        text.className = "font-mono text-[11px] font-extrabold tracking-wider text-cyan-200";
+        text.textContent = "240 ГЦ • ФОРСАЖ";
+        hint.textContent = "ФАЗА 2: DIGMA PRO 240 ГЦ • 250 ОЧКОВ • ТУРБО АКТИВЕН!";
+      }
+    }
+
+    function getLiveEffectiveReaction() {
+      if (state.reactionTimes.length === 0) return null;
+      const rawAvg = Math.round(state.reactionTimes.reduce((a, b) => a + b, 0) / state.reactionTimes.length);
+      const comboBonus = state.maxCombo > 1 ? (state.maxCombo - 1) * 10 : 0;
+      return Math.max(130, rawAvg - comboBonus);
+    }
+
+    function updateHudStats() {
+      document.getElementById("hud-timer").textContent = Math.max(0, state.timeLeft).toFixed(1);
+      document.getElementById("hud-score").textContent = state.score;
+
+      const pct = Math.max(0, (state.timeLeft / GAME_DURATION) * 100);
+      document.getElementById("hud-progress").style.width = `${pct}%`;
+
+      // Звёзды розыска в реальном времени строго соответствуют призовым порогам реакции
+      const liveRt = getLiveEffectiveReaction();
+      const liveRtEl = document.getElementById("hud-rt-live");
+      let currentStars = 0;
+
+      if (liveRt !== null) {
+        liveRtEl.textContent = `${liveRt} мс`;
+        if (liveRt < 390) currentStars = 3;
+        else if (liveRt < 520) currentStars = 2;
+        else currentStars = 1;
+      } else {
+        liveRtEl.textContent = "— мс";
+      }
+
+      state.stars = currentStars;
+      for (let i = 1; i <= 3; i++) {
+        const el = document.getElementById(`star-${i}`);
+        if (i <= currentStars) {
+          el.classList.add("star-active");
+          el.classList.remove("star-inactive");
+        } else {
+          el.classList.remove("star-active");
+          el.classList.add("star-inactive");
+        }
+      }
+
+      // 3 индикатора прогресса серии (каждые 3 попадания подряд без промахов = +1 уровень TURBO)
+      const pipsFilled = state.currentComboMult >= 4 ? 3 : (state.streak % 3);
+      for (let p = 1; p <= 3; p++) {
+        const pip = document.getElementById(`pip-${p}`);
+        if (p <= pipsFilled) {
+          pip.className = "w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#ffb703] transition-all";
+        } else {
+          pip.className = "w-1.5 h-1.5 rounded-full bg-white/20 transition-all";
+        }
+      }
+
+      // Бейдж TURBO x2 / x3 / x4
+      const comboWrap = document.getElementById("hud-combo-wrap");
+      const comboVal = document.getElementById("hud-combo");
+      if (state.currentComboMult > 1) {
+        comboVal.textContent = state.currentComboMult;
+        comboWrap.classList.remove("hidden");
+      } else {
+        comboWrap.classList.add("hidden");
+      }
+    }
+
+    function finishGame() {
+      state.pendingLagTimeouts.forEach(clearTimeout);
+      state.pendingLagTimeouts = [];
+      state.screen = "results";
+      state.targets = [];
+      stopBgPulse();
+      playFinishSound();
+      triggerHaptic("success");
+
+      document.getElementById("screen-hud").classList.add("hidden");
+      document.getElementById("overdrive-banner").classList.add("hidden");
+      document.getElementById("top-bar").classList.remove("hidden");
+      document.getElementById("backdrop-dim").style.opacity = "0.86";
+
+      // Подсчет итоговой реакции с бонусом за максимальное турбо-комбо
+      const rawAvgReaction = state.reactionTimes.length > 0
+        ? Math.round(state.reactionTimes.reduce((a, b) => a + b, 0) / state.reactionTimes.length)
+        : 540;
+
+      const comboReactionBonus = state.maxCombo > 1 ? (state.maxCombo - 1) * 10 : 0;
+      lastAvgReaction = Math.max(130, rawAvgReaction - comboReactionBonus);
+
+      // Сравнение фаз 60 Гц vs 240 Гц
+      const avg60 = state.rt60List.length > 0
+        ? Math.round(state.rt60List.reduce((a, b) => a + b, 0) / state.rt60List.length)
+        : 540;
+      const avg240 = state.rt240List.length > 0
+        ? Math.round(state.rt240List.reduce((a, b) => a + b, 0) / state.rt240List.length)
+        : 320;
+      const diffPct = Math.round(((avg60 - avg240) / Math.max(avg60, 1)) * 100);
+
+      document.getElementById("res-score").textContent = state.score;
+      document.getElementById("res-reaction").textContent = `${lastAvgReaction} мс`;
+      document.getElementById("res-boost").textContent = `x${state.maxCombo}`;
+      document.getElementById("res-rt-60").textContent = `${avg60} мс`;
+      document.getElementById("res-hits-60").textContent = state.hits60;
+      document.getElementById("res-rt-240").textContent = `${avg240} мс`;
+      document.getElementById("res-hits-240").textContent = state.hits240;
+
+      const phaseDiffEl = document.getElementById("res-phase-diff");
+      phaseDiffEl.textContent = diffPct > 4
+        ? `+${diffPct}% быстрее на 240 Гц`
+        : `Всего попаданий: ${state.hits}`;
+
+      const comboBonusTag = document.getElementById("res-combo-bonus-tag");
+      if (comboReactionBonus > 0) {
+        comboBonusTag.textContent = `комбо -${comboReactionBonus} мс`;
+        comboBonusTag.classList.remove("hidden");
+      } else {
+        comboBonusTag.classList.add("hidden");
+      }
+
+      // Прежние пороги выдачи мониторов DIGMA PRO
+      const nextTierHint = document.getElementById("res-next-tier-hint");
+      const nextTierText = document.getElementById("res-next-tier-text");
+      let starsHtml = "";
+
+      if (lastAvgReaction < 390) {
+        selectedMonitor = MONITOR_CATALOG.vision_l;
+        starsHtml = '<span class="text-amber-300 drop-shadow-[0_0_12px_rgba(255,183,3,0.9)]">★★★</span>';
+        nextTierHint.classList.add("hidden");
+      } else if (lastAvgReaction < 520) {
+        selectedMonitor = MONITOR_CATALOG.art_l;
+        starsHtml = '<span class="text-amber-400">★★</span><span class="text-white/20">★</span>';
+        const diff = lastAvgReaction - 389;
+        nextTierText.textContent = `Ускорься на ${diff} мс — откроешь флагман Vision L 240 Гц (-15%)!`;
+        nextTierHint.classList.remove("hidden");
+      } else {
+        selectedMonitor = MONITOR_CATALOG.gaming_144;
+        starsHtml = '<span class="text-amber-400">★</span><span class="text-white/20">★★</span>';
+        const diff = lastAvgReaction - 519;
+        nextTierText.textContent = `Ускорься на ${diff} мс — откроешь игровой Art L 27" 165 Гц (-12%)!`;
+        nextTierHint.classList.remove("hidden");
+      }
+
+      document.getElementById("res-stars").innerHTML = starsHtml;
+      document.getElementById("res-rank-badge").textContent = selectedMonitor.rank;
+      document.getElementById("res-discount-badge").textContent = `СКИДКА ${selectedMonitor.discount}%`;
+      document.getElementById("res-mon-hz").textContent = selectedMonitor.hzLabel;
+      document.getElementById("res-mon-name").textContent = selectedMonitor.name;
+      document.getElementById("res-mon-specs").textContent = selectedMonitor.specs;
+      document.getElementById("res-promo-code").textContent = selectedMonitor.promo;
+
+      const ozonBuyLink = document.getElementById("ozon-buy-link");
+      ozonBuyLink.href = buildOzonTrackedUrl(selectedMonitor);
+
+      // Сброс состояния кнопки вызова другу
+      const shareBtn = document.getElementById("btn-share-challenge");
+      const shareBtnIcon = document.getElementById("share-btn-icon");
+      const shareBtnText = document.getElementById("share-btn-text");
+      shareBtn.className = "w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-purple-100 font-semibold text-[11.5px] active:scale-[0.98] transition flex items-center justify-center gap-2 cursor-pointer";
+      shareBtnIcon.textContent = "✈";
+      shareBtnText.textContent = "Бросить вызов другу в Telegram (+3% к скидке)";
+
+      trackEvent("game_finish", {
+        score: state.score,
+        reaction_ms: lastAvgReaction,
+        max_combo: state.maxCombo,
+        model: selectedMonitor.name,
+        promo_code: selectedMonitor.promo
+      });
+
+      const resScreen = document.getElementById("screen-results");
+      const resCard = document.getElementById("results-card");
+      resScreen.classList.remove("hidden");
+      resCard.classList.remove("animate-results");
+      void resCard.offsetWidth;
+      resCard.classList.add("animate-results");
+    }
+
+    function goToStart() {
+      stopBgPulse();
+      state.pendingLagTimeouts.forEach(clearTimeout);
+      state.pendingLagTimeouts = [];
+      state.screen = "start";
+      state.targets = [];
+      document.getElementById("screen-results").classList.add("hidden");
+      document.getElementById("screen-hud").classList.add("hidden");
+      document.getElementById("top-bar").classList.remove("hidden");
+      document.getElementById("screen-start").classList.remove("hidden");
+      document.getElementById("backdrop-dim").style.opacity = "1";
+    }
+
+    /**
+     * ============================================================================
+     * 8. ОБРАБОТКА НАЖАТИЙ ПО ДВУМ ЦЕЛЯМ (POINTERDOWN)
+     * ============================================================================
+     */
+    canvas.addEventListener("pointerdown", (e) => {
+      if (state.screen !== "playing") return;
+
+      const rect = canvas.getBoundingClientRect();
+      const tapX = e.clientX - rect.left;
+      const tapY = e.clientY - rect.top;
+      const tapTime = performance.now();
+
+      if (state.phase === 1) {
+        // ФАЗА 1 (60 ГЦ): имитация инпут-лага 80 мс
+        const tid = setTimeout(() => {
+          if (state.screen === "playing" && state.phase === 1) {
+            processHitCheck(tapX, tapY, tapTime + LAG_60HZ_MS);
+          }
+        }, LAG_60HZ_MS);
+        state.pendingLagTimeouts.push(tid);
+      } else {
+        // ФАЗА 2 (240 ГЦ): мгновенный отклик 0 мс
+        processHitCheck(tapX, tapY, tapTime);
+      }
+    });
+
+    function processHitCheck(x, y, effectiveTime) {
+      // Комфортный хитбокс +16px для сенсорного экрана смартфона
+      let hitIndex = -1;
+      for (let i = state.targets.length - 1; i >= 0; i--) {
+        const t = state.targets[i];
+        const dist = Math.hypot(t.renderX - x, t.renderY - y);
+        if (dist <= t.radius + 16) {
+          hitIndex = i;
+          break;
+        }
+      }
+
+      if (hitIndex !== -1) {
+        const target = state.targets[hitIndex];
+        state.targets.splice(hitIndex, 1);
+
+        // Честный расчёт времени реакции для 2 одновременных целей:
+        // отсчитываем от более позднего из двух событий — появления этой цели или предыдущего действия игрока
+        const refStart = Math.max(target.spawnTime, state.lastActionTime);
+        const rawDelta = Math.max(120, Math.round(effectiveTime - refStart));
+        state.lastActionTime = effectiveTime;
+
+        const isPro = state.phase === 2;
+
+        // Строгий подсчет серии и активации TURBO каждые 3 попадания подряд (работает в обеих фазах!)
+        const prevComboMult = state.currentComboMult;
+        state.streak++;
+        const hitComboMult = Math.min(4, 1 + Math.floor(state.streak / 3));
+        state.currentComboMult = hitComboMult;
+        if (hitComboMult > state.maxCombo) state.maxCombo = hitComboMult;
+        const isComboLevelUp = hitComboMult > prevComboMult;
+
+        state.hits++;
+        let gainedPoints = 0;
+        let recordedReaction = 0;
+
+        if (isPro) {
+          state.hits240++;
+          gainedPoints = 250 * hitComboMult;
+          recordedReaction = Math.max(145, Math.min(720, rawDelta - 35));
+          state.rt240List.push(recordedReaction);
+        } else {
+          state.hits60++;
+          gainedPoints = 100 * hitComboMult;
+          recordedReaction = Math.max(220, Math.min(880, rawDelta + 45));
+          state.rt60List.push(recordedReaction);
+        }
+
+        state.score += gainedPoints;
+        state.reactionTimes.push(recordedReaction);
+
+        // Прежние звуки попадания + аккорд TURBO на 3-м, 6-м и 9-м попадании подряд
+        playHitSound(isPro, state.streak, hitComboMult);
+        if (isComboLevelUp) {
+          playComboUpSound(hitComboMult);
+        }
+        triggerHaptic(isComboLevelUp ? "success" : (isPro ? "medium" : "light"));
+
+        if (isPro || isComboLevelUp) {
+          triggerShake(false);
+        }
+
+        // Частицы и вылетающий текст
+        if (isPro || hitComboMult >= 2) {
+          spawnParticles(target.renderX, target.renderY, "#00f0ff", "#ffb703", isComboLevelUp ? 24 : 18);
+        } else {
+          spawnParticles(target.renderX, target.renderY, "#a1a1aa", "#ff2a85", 10);
+        }
+
+        if (isComboLevelUp) {
+          spawnFloatingText(target.renderX, target.renderY - 22, `⚡ ТУРБО x${hitComboMult}!`, "#ffb703", 17);
+        }
+        spawnFloatingText(
+          target.renderX,
+          target.renderY + (isComboLevelUp ? 4 : -8),
+          `+${gainedPoints} (${recordedReaction}мс)`,
+          isPro ? "#00f0ff" : "#e4e4e7",
+          isPro ? 14 : 13
+        );
+
+        // Всегда поддерживаем 2 активные цели на экране
+        ensureTwoTargets();
+        updateHudStats();
+      } else {
+        // Промах по пустому полю сбрасывает серию и турбо-комбо
+        if (state.streak > 0 || state.currentComboMult > 1) {
+          state.streak = 0;
+          state.currentComboMult = 1;
+        }
+        playMissSound();
+        triggerHaptic("light");
+        spawnParticles(x, y, "#ff2a85", "#52525b", 6);
+        spawnFloatingText(x, y, "МИМО", "#ff2a85", 12);
+        updateHudStats();
+      }
+    }
+
+    /**
+     * ============================================================================
+     * 9. ОТРИСОВКА ФОНА (SYNTHWAVE), ДВУХ ЦЕЛЕЙ И ЧАСТИЦ
+     * ============================================================================
+     */
+    function drawSynthwaveBackground(dt) {
+      const isOverdrive = state.screen === "playing" && state.phase === 2;
+      const turboBonus = Math.max(0, state.currentComboMult - 1) * 0.65;
+      const speedMult = (isOverdrive ? 2.8 : 0.85) + turboBonus;
+      state.bgScroll = (state.bgScroll + dt * 55 * speedMult) % 44;
+
+      // 1. Небо Vice City
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, canvasH);
+      if (isOverdrive) {
+        skyGrad.addColorStop(0, "#12062e");
+        skyGrad.addColorStop(0.52, "#2a0845");
+        skyGrad.addColorStop(1, "#090314");
+      } else {
+        skyGrad.addColorStop(0, "#140726");
+        skyGrad.addColorStop(0.52, "#1d0a30");
+        skyGrad.addColorStop(1, "#0b0516");
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, canvasW, canvasH);
+
+      // 2. Закатное ретровейв-солнце на горизонте
+      const horizonY = canvasH * 0.56;
+      const sunRadius = Math.min(canvasW * 0.28, 115);
+      const sunGrad = ctx.createLinearGradient(0, horizonY - sunRadius, 0, horizonY + sunRadius * 0.4);
+      sunGrad.addColorStop(0, "#ffe066");
+      sunGrad.addColorStop(0.45, "#ff6b35");
+      sunGrad.addColorStop(1, "#ff2a85");
+
+      ctx.save();
+      ctx.globalAlpha = isOverdrive ? 0.52 : 0.34;
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(canvasW / 2, horizonY - sunRadius * 0.15, sunRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#1b092d";
+      for (let i = 0; i < 6; i++) {
+        const sy = horizonY - sunRadius * 0.1 + i * 11;
+        const sh = 1.5 + i * 0.9;
+        ctx.fillRect(canvasW / 2 - sunRadius, sy, sunRadius * 2, sh);
+      }
+      ctx.restore();
+
+      // 3. Перспективная неоновая сетка
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, horizonY, canvasW, canvasH - horizonY);
+      ctx.clip();
+
+      const glow = ctx.createLinearGradient(0, horizonY, 0, horizonY + 80);
+      glow.addColorStop(0, isOverdrive ? "rgba(0, 240, 255, 0.35)" : "rgba(255, 42, 133, 0.25)");
+      glow.addColorStop(1, "transparent");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, horizonY, canvasW, 80);
+
+      ctx.strokeStyle = isOverdrive ? "rgba(0, 240, 255, 0.28)" : "rgba(255, 42, 133, 0.18)";
+      ctx.lineWidth = 1;
+
+      const centerX = canvasW / 2;
+      for (let i = -8; i <= 8; i++) {
+        ctx.beginPath();
+        ctx.moveTo(centerX + i * 24, horizonY);
+        ctx.lineTo(centerX + i * 135, canvasH);
+        ctx.stroke();
+      }
+
+      const numLines = 11;
+      for (let i = 0; i < numLines; i++) {
+        const t = (i + state.bgScroll / 44) / numLines;
+        const y = horizonY + Math.pow(t, 2.15) * (canvasH - horizonY);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvasW, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = isOverdrive ? "rgba(0, 240, 255, 0.65)" : "rgba(255, 42, 133, 0.45)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, horizonY);
+      ctx.lineTo(canvasW, horizonY);
+      ctx.stroke();
+
+      // 4. Спидлайны по краям в режиме 240 Гц или при активном TURBO
+      if (isOverdrive || state.currentComboMult >= 2) {
+        if (Math.random() < (isOverdrive ? 0.45 : 0.22)) {
+          const leftSide = Math.random() < 0.5;
+          state.speedLines.push({
+            x: leftSide ? Math.random() * 28 : canvasW - Math.random() * 28,
+            y: Math.random() * canvasH,
+            len: 30 + Math.random() * 65,
+            alpha: 0.65,
+            color: Math.random() < 0.5 ? "#00f0ff" : "#ff2a85"
+          });
+        }
+        for (let i = state.speedLines.length - 1; i >= 0; i--) {
+          const sl = state.speedLines[i];
+          sl.alpha -= dt * 2.6;
+          if (sl.alpha <= 0) {
+            state.speedLines.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalAlpha = sl.alpha;
+          ctx.strokeStyle = sl.color;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(sl.x, sl.y);
+          ctx.lineTo(sl.x, sl.y + sl.len);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    function updateAndDrawTargets(dt) {
+      const topSafe = 144;
+      const bottomSafe = 78;
+      const padX = 44;
+
+      // На 60 Гц обновляем визуальную позицию цели с искусственным подёргиванием (~22 fps)
+      state.stutterTick += dt;
+      const allowVisualUpdate = state.phase === 2 || state.stutterTick >= 0.045;
+      if (state.phase === 1 && allowVisualUpdate) {
+        state.stutterTick = 0;
+      }
+
+      for (let i = state.targets.length - 1; i >= 0; i--) {
+        const t = state.targets[i];
+        t.age += dt;
+
+        // По истечении жизни цель просто обновляется на новую (серию комбо не сбрасываем — только промах сбрасывает)
+        if (t.age >= t.lifetime) {
+          state.targets.splice(i, 1);
+          spawnTarget();
+          continue;
+        }
+
+        // Движение с отскоком от границ
+        t.x += t.vx * dt;
+        t.y += t.vy * dt;
+        if (t.x < padX || t.x > canvasW - padX) {
+          t.vx *= -1;
+          t.x = Math.max(padX, Math.min(canvasW - padX, t.x));
+        }
+        if (t.y < topSafe || t.y > canvasH - bottomSafe) {
+          t.vy *= -1;
+          t.y = Math.max(topSafe, Math.min(canvasH - bottomSafe, t.y));
+        }
+
+        if (allowVisualUpdate) {
+          t.trail.push({ x: t.renderX, y: t.renderY });
+          if (t.trail.length > (t.isPhase2 ? 5 : 6)) t.trail.shift();
+          t.renderX = t.x;
+          t.renderY = t.y;
+        }
+
+        const progress = Math.max(0, 1 - t.age / t.lifetime);
+
+        // Шлейф (на 60 Гц — тусклый серый ghosting, на 240 Гц — чистый неоновый след)
+        t.trail.forEach((pt, idx) => {
+          const alpha = ((idx + 1) / t.trail.length) * (t.isPhase2 ? 0.22 : 0.28);
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = t.isPhase2 ? "#00f0ff" : "#71717a";
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, t.radius * 0.85, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Основной круг цели
+        ctx.save();
+        const x = t.renderX;
+        const y = t.renderY;
+
+        if (t.isPhase2) {
+          ctx.shadowColor = "#00f0ff";
+          ctx.shadowBlur = 22;
+          const grad = ctx.createRadialGradient(x, y, 4, x, y, t.radius);
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(0.38, "#00f0ff");
+          grad.addColorStop(1, "rgba(255, 42, 133, 0.85)");
+          ctx.fillStyle = grad;
+        } else {
+          ctx.shadowColor = "rgba(255, 42, 133, 0.45)";
+          ctx.shadowBlur = 10;
+          const grad = ctx.createRadialGradient(x, y, 4, x, y, t.radius);
+          grad.addColorStop(0, "#e4e4e7");
+          grad.addColorStop(0.55, "#a1a1aa");
+          grad.addColorStop(1, "rgba(255, 42, 133, 0.55)");
+          ctx.fillStyle = grad;
+        }
+
+        ctx.beginPath();
+        ctx.arc(x, y, t.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Внутренний прицел-крестик
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = t.isPhase2 ? "#0d0618" : "#27272a";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x - 7, y);
+        ctx.lineTo(x + 7, y);
+        ctx.moveTo(x, y - 7);
+        ctx.lineTo(x, y + 7);
+        ctx.stroke();
+
+        // Сужающееся золотое кольцо таймера
+        ctx.strokeStyle = t.isPhase2 ? "#ffb703" : "rgba(255, 255, 255, 0.45)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(x, y, t.radius + 3 + progress * 15, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+    }
+
+    function updateAndDrawEffects(dt) {
+      for (let i = state.particles.length - 1; i >= 0; i--) {
+        const p = state.particles[i];
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vx *= 0.94;
+        p.vy *= 0.94;
+        p.life -= p.decay * dt;
+        if (p.life <= 0) {
+          state.particles.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+        const ft = state.floatingTexts[i];
+        ft.y += ft.vy * dt;
+        ft.life -= dt * 1.4;
+        if (ft.life <= 0) {
+          state.floatingTexts.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, ft.life);
+        ctx.font = `800 ${ft.size}px "JetBrains Mono", monospace`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = ft.color;
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
+        ctx.shadowBlur = 6;
+        ctx.fillText(ft.text, ft.x, ft.y);
+        ctx.restore();
+      }
+    }
+
+    // Главный цикл анимации
+    function gameLoop(timestamp) {
+      if (!state.lastFrameTime) state.lastFrameTime = timestamp;
+      const dt = Math.min((timestamp - state.lastFrameTime) / 1000, 0.05);
+      state.lastFrameTime = timestamp;
+
+      drawSynthwaveBackground(dt);
+
+      if (state.screen === "playing") {
+        state.timeLeft -= dt;
+
+        if (state.phase === 1 && state.timeLeft <= SWITCH_TIME) {
+          state.timeLeft = SWITCH_TIME;
+          triggerOverdriveDrop();
+        } else if (state.timeLeft <= 0) {
+          state.timeLeft = 0;
+          updateHudStats();
+          finishGame();
+        } else {
+          updateHudStats();
+          updateAndDrawTargets(dt);
+        }
+      } else if (state.screen === "drop") {
+        state.dropTimer -= dt;
+        if (state.dropTimer <= 0) {
+          document.getElementById("overdrive-banner").classList.add("hidden");
+          state.screen = "playing";
+          state.lastActionTime = performance.now();
+          ensureTwoTargets();
+          updateHudStats();
+        }
+      }
+
+      updateAndDrawEffects(dt);
+      requestAnimationFrame(gameLoop);
+    }
+
+    /**
+     * ============================================================================
+     * 10. МОДАЛКА ПРАВИЛ, ПРОМОКОД, OZON И ШЕРИНГ В TELEGRAM
+     * ============================================================================
+     */
+    function toggleRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        openRulesModal();
+      } else {
+        closeRulesModal();
+      }
+    }
+
+    function openRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      const btn = document.getElementById("btn-rules-toggle");
+      if (modal) modal.classList.remove("hidden");
+      if (btn) btn.classList.add("border-amber-300", "bg-pink-500/30");
+      triggerHaptic("light");
+    }
+
+    function closeRulesModal() {
+      const modal = document.getElementById("rules-modal");
+      const btn = document.getElementById("btn-rules-toggle");
+      if (modal) modal.classList.add("hidden");
+      if (btn) btn.classList.remove("border-amber-300", "bg-pink-500/30");
+    }
+
+    function copyPromo() {
+      const codeText = document.getElementById("res-promo-code").textContent.trim();
+      try {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = codeText;
+        tempInput.style.position = "fixed";
+        tempInput.style.opacity = "0";
+        document.body.appendChild(tempInput);
+        tempInput.focus();
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      } catch (e) {}
+
+      triggerHaptic("light");
+      trackEvent("promo_copy", {
+        model: selectedMonitor.name,
+        promo_code: codeText
+      });
+      showToast(`Промокод ${codeText} скопирован! Примените его в корзине Ozon.`);
+    }
+
+    function handleOzonClick(e) {
+      const trackedUrl = buildOzonTrackedUrl(selectedMonitor);
+      const currentPromo = document.getElementById("res-promo-code").textContent.trim();
+
+      triggerHaptic("medium");
+      trackEvent("ozon_click", {
+        model: selectedMonitor.name,
+        model_key: selectedMonitor.key,
+        reaction_ms: lastAvgReaction,
+        promo_code: currentPromo,
+        target_url: trackedUrl
+      });
+
+      if (tg && tg.openLink) {
+        e.preventDefault();
+        tg.openLink(trackedUrl);
+      }
+    }
+
+    function shareChallenge() {
+      const discountBadge = document.getElementById("res-discount-badge");
+      const promoCode = document.getElementById("res-promo-code");
+      const shareBtn = document.getElementById("btn-share-challenge");
+      const shareBtnIcon = document.getElementById("share-btn-icon");
+      const shareBtnText = document.getElementById("share-btn-text");
+
+      let activePromo = selectedMonitor.promo;
+      if (!referralBonusApplied) {
+        referralBonusApplied = true;
+        const boostedDiscount = selectedMonitor.discount + 3;
+        activePromo = `${selectedMonitor.promo}-VIP`;
+
+        discountBadge.textContent = `СКИДКА ${boostedDiscount}%`;
+        promoCode.textContent = activePromo;
+
+        shareBtn.className = "w-full py-2.5 px-3 rounded-xl bg-cyan-400/20 border border-cyan-300/70 text-white font-semibold text-[11.5px] transition flex items-center justify-center gap-2 cursor-pointer";
+        shareBtnIcon.textContent = "✓";
+        shareBtnText.textContent = `Вызов отправлен • Бонус +3% активирован (${boostedDiscount}%)`;
+
+        triggerHaptic("success");
+        showToast(`Бонус +3% начислен! Скидка увеличена до ${boostedDiscount}% (${activePromo})`);
+      }
+
+      trackEvent("share_challenge", {
+        model: selectedMonitor.name,
+        reaction_ms: lastAvgReaction,
+        promo_code: activePromo
+      });
+
+      const appDeepLink = `https://t.me/${APP_CONFIG.BOT_USERNAME}/${APP_CONFIG.APP_SHORT_NAME}?startapp=challenge_friend`;
+      const shareMessage = `Моя реакция в DIGMA PRO 240Hz Arena — ${lastAvgReaction} мс (${state.score} очков)! Попробуй побить мой рекорд и забери скидку на игровой монитор DIGMA PRO на Ozon:`;
+      const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(appDeepLink)}&text=${encodeURIComponent(shareMessage)}`;
+
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(tgShareUrl);
+      } else {
+        window.open(tgShareUrl, "_blank", "noopener,noreferrer");
+      }
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const el = document.getElementById("app-toast");
+      el.textContent = msg;
+      el.classList.remove("opacity-0");
+      el.classList.add("opacity-100");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.remove("opacity-100");
+        el.classList.add("opacity-0");
+      }, 2800);
+    }
+
+    window.onload = function () {
+      resizeCanvas();
+      initTelegramApp();
+      requestAnimationFrame(gameLoop);
+    };
+  </script>
+</body>
+</html>
