@@ -233,7 +233,7 @@
             DIGMA <span class="text-pink-400">PRO</span>
           </div>
           <div class="text-[9.5px] font-mono uppercase tracking-widest text-cyan-300/85 mt-0.5 whitespace-nowrap">
-            АРЕНА РЕАКЦИИ 240 ГЦ
+            МОНИТОРЫ • АРЕНА 240 ГЦ
           </div>
         </div>
       </div>
@@ -267,82 +267,106 @@
     <!-- =============================================================== -->
     <!-- 1. СТАРТОВЫЙ ЭКРАН (ПРИЗОВЫЕ МОНИТОРЫ И КНОПКА ЗАПУСКА)         -->
     <!-- =============================================================== -->
-    <section id="screen-start" class="ui-layer px-5 pt-16 pb-6 justify-between overflow-y-auto no-scrollbar">
+    <section id="screen-start" class="ui-layer px-5 pt-16 pb-5 justify-between overflow-y-auto no-scrollbar">
       <!-- Главный Hero-блок -->
-      <div class="my-auto py-3">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-400/15 border border-cyan-400/35 text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-300 mb-3">
-          <span>⚡</span> МИССИЯ: 20&nbsp;СЕКУНД • 2&nbsp;ЦЕЛИ
+      <div class="my-auto py-2">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-400/15 border border-cyan-400/35 text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-300 mb-2.5">
+          <span>🖥️</span> ИГРОВЫЕ МОНИТОРЫ DIGMA&nbsp;PRO
         </div>
-        <h1 class="font-gta italic uppercase text-[26px] sm:text-[32px] leading-[1.12] tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.75)] mb-3">
-          ПРОВЕРЬ <span class="gta-gradient-text">РЕАКЦИЮ</span><br/>И ВЫИГРАЙ ДО&nbsp;<span class="whitespace-nowrap">-15%</span>
+        <h1 class="font-gta italic uppercase text-[24px] sm:text-[29px] leading-[1.14] tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.75)] mb-2.5">
+          ПРОВЕРЬ <span class="gta-gradient-text">РЕАКЦИЮ</span><br/>И ВЫИГРАЙ ДО&nbsp;<span class="text-cyan-300 whitespace-nowrap">-15%</span> НА&nbsp;МОНИТОР
         </h1>
-        <p class="text-[12.5px] leading-relaxed text-purple-100/85 max-w-[320px] mb-5">
-          Сбивай сразу <strong class="text-white">две неоновые цели</strong>: сравни лаги <strong class="text-zinc-200 whitespace-nowrap">60&nbsp;Гц</strong> с плавностью <strong class="text-cyan-300 whitespace-nowrap">240&nbsp;Гц</strong>, копи турбо-комбо и забери промокод на Ozon.
+        <p class="text-[12px] leading-relaxed text-purple-100/85 max-w-[330px] mb-4">
+          Сбивай <strong class="text-white">две цели</strong>: сравни лаги <strong class="text-zinc-200 whitespace-nowrap">60&nbsp;Гц</strong> с плавностью <strong class="text-cyan-300 whitespace-nowrap">240&nbsp;Гц</strong> и забери промокод на игровой монитор <strong class="text-white">DIGMA&nbsp;PRO</strong> на Ozon.
         </p>
 
-        <!-- Блок призов через «Звёзды розыска» и точные пороги реакции -->
+        <!-- Блок призов: витрина из 3 игровых мониторов -->
         <div class="mb-2">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="text-[10.5px] font-mono uppercase tracking-wider text-purple-200/80">Чем быстрее реакция — тем выше приз</span>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10.5px] font-mono uppercase tracking-wider text-purple-200/85">Призовые мониторы по скорости:</span>
             <button type="button" onclick="toggleRulesModal()" class="text-[11px] font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-4 cursor-pointer">
               Правила
             </button>
           </div>
 
           <div class="grid grid-cols-3 gap-2">
-            <!-- 1 звезда: ≥ 520 мс -->
+            <!-- 1 звезда: ≥ 430 мс -->
             <div class="rounded-2xl bg-black/45 border border-white/15 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
               <div>
-                <div class="text-xs tracking-tighter text-amber-400 mb-1">★<span class="text-white/20">★★</span></div>
-                <div class="font-display text-lg font-bold text-white leading-none whitespace-nowrap">144&nbsp;Гц</div>
-                <div class="text-[10px] text-purple-200/75 mt-1">23.8" IPS</div>
-                <div class="text-[9px] font-mono text-zinc-400 mt-0.5 whitespace-nowrap">≥&nbsp;520&nbsp;мс</div>
+                <div class="text-[11px] tracking-tighter text-amber-400 mb-1.5">★<span class="text-white/20">★★</span></div>
+                <!-- Мини-рендер монитора 144 Гц -->
+                <div class="flex flex-col items-center mb-1.5">
+                  <div class="w-16 h-10 rounded-[5px] bg-[#0e071a] border border-zinc-400/70 flex flex-col items-center justify-center shadow-inner">
+                    <span class="font-display text-sm font-bold text-white leading-none whitespace-nowrap">144&nbsp;Гц</span>
+                    <span class="text-[7px] font-mono text-zinc-400 mt-0.5">IPS</span>
+                  </div>
+                  <div class="w-2 h-1 bg-zinc-400/70"></div>
+                  <div class="w-7 h-[2px] rounded-full bg-zinc-400/70"></div>
+                </div>
+                <div class="text-[10px] font-semibold text-white leading-tight">Монитор 23.8"</div>
+                <div class="text-[9px] font-mono text-zinc-400 mt-0.5 whitespace-nowrap">≥&nbsp;430&nbsp;мс</div>
               </div>
-              <div class="mt-2.5 py-1 rounded-lg bg-white/10 font-mono text-xs font-bold text-white">-10%</div>
+              <div class="mt-2 py-1 rounded-lg bg-white/10 font-mono text-[11px] font-bold text-white">Скидка -10%</div>
             </div>
 
-            <!-- 2 звезды: 390–519 мс -->
-            <div class="rounded-2xl bg-black/50 border border-cyan-400/35 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
+            <!-- 2 звезды: 310–429 мс -->
+            <div class="rounded-2xl bg-black/50 border border-cyan-400/40 backdrop-blur-md p-2.5 flex flex-col justify-between text-center">
               <div>
-                <div class="text-xs tracking-tighter text-amber-400 mb-1">★★<span class="text-white/20">★</span></div>
-                <div class="font-display text-lg font-bold text-cyan-200 leading-none whitespace-nowrap">165&nbsp;Гц</div>
-                <div class="text-[10px] text-purple-200/80 mt-1">Art L 27"</div>
-                <div class="text-[9px] font-mono text-cyan-300/80 mt-0.5 whitespace-nowrap">390–519&nbsp;мс</div>
+                <div class="text-[11px] tracking-tighter text-amber-400 mb-1.5">★★<span class="text-white/20">★</span></div>
+                <!-- Мини-рендер монитора 165 Гц -->
+                <div class="flex flex-col items-center mb-1.5">
+                  <div class="w-16 h-10 rounded-[5px] bg-[#081524] border border-cyan-300/80 flex flex-col items-center justify-center shadow-[0_0_12px_rgba(0,240,255,0.28)]">
+                    <span class="font-display text-sm font-bold text-cyan-200 leading-none whitespace-nowrap">165&nbsp;Гц</span>
+                    <span class="text-[7px] font-mono text-cyan-300/85 mt-0.5">2K QHD</span>
+                  </div>
+                  <div class="w-2 h-1 bg-cyan-300/80"></div>
+                  <div class="w-7 h-[2px] rounded-full bg-cyan-300/80"></div>
+                </div>
+                <div class="text-[10px] font-semibold text-cyan-100 leading-tight">Монитор Art&nbsp;L 27"</div>
+                <div class="text-[9px] font-mono text-cyan-300/85 mt-0.5 whitespace-nowrap">310–429&nbsp;мс</div>
               </div>
-              <div class="mt-2.5 py-1 rounded-lg bg-cyan-400/20 border border-cyan-400/40 font-mono text-xs font-bold text-cyan-200">-12%</div>
+              <div class="mt-2 py-1 rounded-lg bg-cyan-400/20 border border-cyan-400/40 font-mono text-[11px] font-bold text-cyan-200">Скидка -12%</div>
             </div>
 
-            <!-- 3 звезды: < 390 мс -->
-            <div class="relative rounded-2xl bg-gradient-to-b from-pink-500/30 via-purple-900/55 to-black/65 border border-amber-400/80 backdrop-blur-md p-2.5 flex flex-col justify-between text-center shadow-[0_0_24px_rgba(255,42,133,0.3)]">
-              <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-pink-500 text-zinc-950 text-[8px] font-black uppercase tracking-wider whitespace-nowrap">
-                ТОП ПРИЗ
+            <!-- 3 звезды: < 310 мс -->
+            <div class="relative rounded-2xl bg-gradient-to-b from-pink-500/30 via-purple-900/55 to-black/65 border border-amber-400/85 backdrop-blur-md p-2.5 flex flex-col justify-between text-center shadow-[0_0_24px_rgba(255,42,133,0.32)]">
+              <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-pink-500 text-zinc-950 text-[7.5px] font-black uppercase tracking-wider whitespace-nowrap">
+                ТОП МОНИТОР
               </div>
-              <div class="pt-1">
-                <div class="text-xs tracking-tighter text-amber-300 mb-1">★★★</div>
-                <div class="font-display text-xl font-bold text-amber-300 leading-none whitespace-nowrap">240&nbsp;Гц</div>
-                <div class="text-[10px] font-semibold text-white mt-1">Vision L 31.5"</div>
-                <div class="text-[9px] font-mono text-amber-200 font-bold mt-0.5 whitespace-nowrap">&lt;&nbsp;390&nbsp;мс</div>
+              <div class="pt-0.5">
+                <div class="text-[11px] tracking-tighter text-amber-300 mb-1.5">★★★</div>
+                <!-- Мини-рендер флагманского монитора 240 Гц -->
+                <div class="flex flex-col items-center mb-1.5">
+                  <div class="w-[68px] h-10 rounded-[5px] bg-[#1a0826] border border-amber-300 flex flex-col items-center justify-center shadow-[0_0_14px_rgba(255,183,3,0.4)]">
+                    <span class="font-display text-base font-bold text-amber-300 leading-none whitespace-nowrap">240&nbsp;Гц</span>
+                    <span class="text-[7px] font-mono text-pink-300 mt-0.5">4K OLED</span>
+                  </div>
+                  <div class="w-2.5 h-1 bg-amber-300"></div>
+                  <div class="w-8 h-[2px] rounded-full bg-amber-300"></div>
+                </div>
+                <div class="text-[10px] font-bold text-white leading-tight">Vision&nbsp;L 31.5"</div>
+                <div class="text-[9px] font-mono text-amber-200 font-bold mt-0.5 whitespace-nowrap">&lt;&nbsp;310&nbsp;мс</div>
               </div>
-              <div class="mt-2.5 py-1 rounded-lg bg-white font-mono text-xs font-black text-zinc-950">-15%</div>
+              <div class="mt-2 py-1 rounded-lg bg-white font-mono text-[11px] font-black text-zinc-950">Скидка -15%</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Нижний блок: CTA + онлайн -->
-      <div class="space-y-3 pt-2">
+      <div class="space-y-2.5 pt-2">
         <button
           type="button"
           onclick="startGame()"
-          class="gta-cta btn-sheen relative overflow-hidden w-full py-4 rounded-2xl text-white font-gta italic tracking-wider text-[15px] uppercase flex items-center justify-center gap-2 active:scale-[0.97] transition cursor-pointer"
+          class="gta-cta btn-sheen relative overflow-hidden w-full py-3.5 rounded-2xl text-white font-gta italic tracking-wider text-[14px] sm:text-[15px] uppercase flex items-center justify-center gap-2 active:scale-[0.97] transition cursor-pointer"
         >
           <span>▶</span>
-          <span>НАЧАТЬ МИССИЮ (20 СЕК)</span>
+          <span>ИГРАТЬ И ВЫИГРАТЬ СКИДКУ</span>
         </button>
 
         <div class="flex items-center justify-center gap-2 text-xs text-purple-200/75">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span>В городе сейчас: <strong class="text-white font-mono">1 482</strong> игрока</span>
+          <span>Борются за мониторы: <strong class="text-white font-mono">1 482</strong> игрока</span>
         </div>
       </div>
     </section>
@@ -625,15 +649,15 @@
             <div class="text-[10.5px] font-mono font-bold text-cyan-300 uppercase">3. Призовые мониторы DIGMA PRO</div>
             <div class="space-y-1 text-[11px]">
               <div class="flex items-center justify-between py-1 border-b border-white/10">
-                <span><strong class="text-amber-300">★★★ &lt; 390 мс</strong> • Киберспорт</span>
+                <span><strong class="text-amber-300">★★★ &lt; 310 мс</strong> • Киберспорт</span>
                 <span class="font-mono text-white font-bold">Vision L 240 Гц (-15%)</span>
               </div>
               <div class="flex items-center justify-between py-1 border-b border-white/10">
-                <span><strong class="text-cyan-300">★★ 390–519 мс</strong> • ПРО-Геймер</span>
+                <span><strong class="text-cyan-300">★★ 310–429 мс</strong> • ПРО-Геймер</span>
                 <span class="font-mono text-cyan-200 font-bold">Art L 27" 165 Гц (-12%)</span>
               </div>
               <div class="flex items-center justify-between py-1">
-                <span><strong class="text-zinc-200">★ ≥ 520 мс</strong> • Игрок</span>
+                <span><strong class="text-zinc-200">★ ≥ 430 мс</strong> • Игрок</span>
                 <span class="font-mono text-zinc-300 font-bold">23.8" 144 Гц (-10%)</span>
               </div>
             </div>
@@ -663,7 +687,7 @@
      */
     const APP_CONFIG = {
       BOT_USERNAME: "Digma_arena_gta_game",
-      APP_SHORT_NAME: "", // Пусто = прямая ссылка на Main Mini App (t.me/Digma_arena_gta_game?startapp=...)
+      APP_SHORT_NAME: "app", // Короткое имя из @BotFather (/newapp), чтобы Telegram рисовал карточку с картинкой и кнопкой «ЗАПУСТИТЬ»
       OZON_VENDOR_PREFIX: "vendor_org_XXXXX",
       TG_ANALYTICS_BOT_TOKEN: "",
       TG_ANALYTICS_CHAT_ID: "",
@@ -1081,6 +1105,7 @@
       streak: 0,
       comboMult: 1,
       maxCombo: 1,
+      lastHitTime: 0,
       rt60List: [],
       rt240List: [],
       allReactionTimes: [],
@@ -1129,7 +1154,8 @@
       const padX = 54;
       const topSafe = 148;
       const bottomSafe = 88;
-      const radius = state.phase === 1 ? 33 : 32;
+      // Усложнение на ~25%: мишени компактнее и подвижнее
+      const radius = state.phase === 1 ? 30 : 28;
 
       let x = padX + Math.random() * Math.max(10, canvasW - padX * 2);
       let y = topSafe + Math.random() * Math.max(10, canvasH - topSafe - bottomSafe);
@@ -1146,7 +1172,7 @@
       }
 
       const angle = Math.random() * Math.PI * 2;
-      const speed = state.phase === 1 ? 40 : 62;
+      const speed = state.phase === 1 ? 52 : 82;
 
       state.targets.push({
         id: Math.random().toString(36).slice(2),
@@ -1158,7 +1184,7 @@
         vy: Math.sin(angle) * speed,
         radius,
         spawnTime: performance.now(),
-        lifetime: state.phase === 1 ? 2.35 : 1.95,
+        lifetime: state.phase === 1 ? 1.95 : 1.55,
         age: 0,
         trail: [],
         isPhase2: state.phase === 2
@@ -1227,6 +1253,7 @@
       state.streak = 0;
       state.comboMult = 1;
       state.maxCombo = 1;
+      state.lastHitTime = 0;
       state.rt60List = [];
       state.rt240List = [];
       state.allReactionTimes = [];
@@ -1257,6 +1284,7 @@
       state.screen = "drop";
       state.phase = 2;
       state.dropTimer = 0.85;
+      state.lastHitTime = 0;
       state.targets = [];
 
       SoundEngine.playOverdriveSound();
@@ -1319,8 +1347,8 @@
 
       if (liveRt !== null) {
         liveRtEl.textContent = `${liveRt} мс`;
-        if (liveRt < 390) stars = 3;
-        else if (liveRt < 520) stars = 2;
+        if (liveRt < 310) stars = 3;
+        else if (liveRt < 430) stars = 2;
         else stars = 1;
       } else {
         liveRtEl.textContent = "— мс";
@@ -1389,23 +1417,23 @@
       const finalReaction = Math.max(120, rawAvg - comboBonusMs);
       lastAvgReaction = finalReaction;
 
-      // Выбор призового монитора по правилам
+      // Выбор призового монитора по усложнённым порогам (+25% к сложности)
       let starsHtml = '<span class="text-amber-400">★</span><span class="text-white/20">★★</span>';
       let nextHintText = "";
 
-      if (finalReaction < 390) {
+      if (finalReaction < 310) {
         selectedMonitor = MONITOR_CATALOG.vision_l;
         starsHtml = '<span class="text-amber-300 drop-shadow-[0_0_12px_rgba(255,183,3,0.9)]">★★★</span>';
         nextHintText = "";
-      } else if (finalReaction < 520) {
+      } else if (finalReaction < 430) {
         selectedMonitor = MONITOR_CATALOG.art_l;
         starsHtml = '<span class="text-amber-400">★★</span><span class="text-white/20">★</span>';
-        const diff = finalReaction - 389;
+        const diff = finalReaction - 309;
         nextHintText = `Ускорься на ${diff} мс, чтобы открыть флагман Vision L 240 Гц (-15%)!`;
       } else {
         selectedMonitor = MONITOR_CATALOG.gaming_144;
         starsHtml = '<span class="text-amber-400">★</span><span class="text-white/20">★★</span>';
-        const diff = finalReaction - 519;
+        const diff = finalReaction - 429;
         nextHintText = `Ускорься на ${diff} мс, чтобы открыть Art L 27" 165 Гц (-12%)!`;
       }
 
@@ -1521,7 +1549,7 @@
       for (let i = state.targets.length - 1; i >= 0; i--) {
         const t = state.targets[i];
         const dist = Math.hypot(t.renderX - x, t.renderY - y);
-        if (dist <= t.radius + 15) {
+        if (dist <= t.radius + 10) {
           hitIndex = i;
           break;
         }
@@ -1531,7 +1559,11 @@
         const target = state.targets[hitIndex];
         state.targets.splice(hitIndex, 1);
 
-        const reactionMs = Math.max(135, Math.min(1150, Math.round(effectiveTime - target.spawnTime)));
+        // Считаем время реакции от момента последнего попадания или появления цели (если до этого был промах/старт)
+        const refTime = Math.max(target.spawnTime, state.lastHitTime);
+        const reactionMs = Math.max(135, Math.min(1150, Math.round(effectiveTime - refTime)));
+        state.lastHitTime = state.phase === 1 ? (effectiveTime - LAG_60HZ_MS) : effectiveTime;
+
         state.hits++;
         state.streak++;
 
@@ -1575,9 +1607,10 @@
         ensureTwoTargets();
         updateHudStats();
       } else {
-        // Промах по пустому полю сбрасывает серию турбо
+        // Промах по пустому полю сбрасывает серию турбо и точку отсчёта реакции
         state.streak = 0;
         state.comboMult = 1;
+        state.lastHitTime = 0;
         SoundEngine.playMissSound();
         spawnParticles(x, y, "#ff2a85", "#52525b", 6);
         spawnFloatingText(x, y, "МИМО", "#ff2a85", 12);
@@ -1977,9 +2010,11 @@
         promo_code: activePromo
       });
 
+      const user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
+      const refTag = user.id ? `challenge_${user.id}` : "challenge_friend";
       const appDeepLink = APP_CONFIG.APP_SHORT_NAME
-        ? `https://t.me/${APP_CONFIG.BOT_USERNAME}/${APP_CONFIG.APP_SHORT_NAME}?startapp=challenge_friend`
-        : `https://t.me/${APP_CONFIG.BOT_USERNAME}?startapp=challenge_friend`;
+        ? `https://t.me/${APP_CONFIG.BOT_USERNAME}/${APP_CONFIG.APP_SHORT_NAME}?startapp=${refTag}`
+        : `https://t.me/${APP_CONFIG.BOT_USERNAME}?startapp=${refTag}`;
       const shareMessage = `Моя реакция в DIGMA PRO Арена 240 Гц — ${lastAvgReaction} мс (${state.score} очков)! Попробуй побить мой рекорд и забери скидку на игровой монитор DIGMA PRO на Ozon:`;
       const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(appDeepLink)}&text=${encodeURIComponent(shareMessage)}`;
 
